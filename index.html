@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
   LobeLab - Educational antenna radiation pattern simulator
-  Version 1.11.0 (2026-10-16)
+  Version 1.11.1 (2026-10-16)
   Copyright (c) 2026 BBerry2020 - https://github.com/BBerry2020
   Source code: https://github.com/BBerry2020/lobelab
   Languages: English (default), Italiano. Use ?lang=it or the flag buttons.
@@ -20,6 +20,7 @@
   The work is provided "as is", without warranty of any kind.
 
   CHANGELOG
+  1.11.1 (2026-10-16) Update notifications and version.json removed.
   1.11.0 (2026-10-16) Educational subtitle; new intro; history and Wikipedia
                       links for every antenna instead of the colour-scale
                       text; version moved to the footer; acknowledgement to
@@ -88,7 +89,7 @@
 <link rel="author" href="https://github.com/BBerry2020">
 <meta name="copyright" content="© 2026 BBerry2020 · CC BY-SA 4.0">
 <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
-<meta name="version" content="1.11.0">
+<meta name="version" content="1.11.1">
 <meta name="date" content="2026-10-16">
 <style>
 :root{--bg:#fbfaf7;--fg:#1f1e1c;--muted:#6b6a65;--card:#ffffff;--border:#e4e2da;--accent:#0f6e56;--accent-bg:#e1f5ee;--grid:#cfccc2;--real:#3d3d3a;--img:#7F77DD;--fill:#1D9E75;--code:#f1efe8}
@@ -226,8 +227,6 @@ body.noscroll{overflow:hidden}
 .legend{font-size:12px;color:var(--muted);margin:0 0 10px}
 footer{color:var(--muted);font-size:13px;text-align:center;margin-top:28px}
 .sub{font-size:18px;color:var(--fg);margin:0 0 8px;font-weight:500}
-.linkbtn{font:inherit;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
-.linkbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .fver{display:inline-block;font-size:12px;border:1px solid var(--border);border-radius:999px;padding:0 8px}
 footer a{color:inherit}
 .warn{border-color:#EF9F27;background:color-mix(in srgb,#EF9F27 9%,var(--card))}
@@ -318,7 +317,6 @@ footer a{color:inherit}
 <div data-i="footThanks"></div>
 <div data-i="footShare"></div>
 <div data-i="footVer"></div>
-<div id="notifyRow" hidden><button type="button" id="notifyBtn" class="linkbtn"></button> <span id="notifyMsg"></span></div>
 <div data-i="footThree"></div>
 </footer>
 </div>
@@ -4561,7 +4559,7 @@ void main() {
 <script>
 /*!
  * LobeLab - Educational antenna radiation pattern simulator
- * Version 1.11.0 (2026-10-16)
+ * Version 1.11.1 (2026-10-16)
  * Copyright (c) 2026 BBerry2020 - https://github.com/BBerry2020
  * Licence CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
  * Educational simulations only: data not valid for real-world use.
@@ -4569,7 +4567,7 @@ void main() {
 const APP=Object.freeze({
   name:"LobeLab",
   subtitle:{en:"Educational antenna radiation pattern simulator",it:"Simulatore didattico di diagrammi di radiazione"},
-  version:"1.11.0",
+  version:"1.11.1",
   date:"2026-10-16",
   author:"BBerry2020",
   authorUrl:"https://github.com/BBerry2020",
@@ -4638,13 +4636,6 @@ en:{
   footThanks:"Thanks to <a href=\"https://www.ari.it/\" target=\"_blank\" rel=\"noopener\">A.R.I. – Associazione Radioamatori Italiani</a> and to all the teachers of the Corso Nazionale Aspiranti Radioamatori 2026.",
   footShare:"You may share and adapt this work, giving credit to the author and keeping the same licence.",
   footVer:"Self-contained page, works offline.",
-  notifyOff:"🔔 Notify me when a new version is out",
-  notifyOnTxt:"🔔 Update notifications on · turn off",
-  notifyDenied:"Notifications are blocked in your browser settings.",
-  notifyOkTitle:"LobeLab: update notifications on",
-  notifyOkBody:"You will get a notification when a new version is published.",
-  notifyNewTitle:"LobeLab {v} is available",
-  notifyNewBody:"Click to reload the page and get the new version.",
   footThree:"3D engine: three.js r186, © 2010-2026 three.js authors, MIT licence",
   no3d:"3D engine not available.",
   noWebgl:"Your browser does not support WebGL: the 3D viewer cannot be shown."
@@ -4700,17 +4691,11 @@ it:{
   footThanks:"Grazie ad <a href=\"https://www.ari.it/\" target=\"_blank\" rel=\"noopener\">A.R.I. – Associazione Radioamatori Italiani</a> e a tutti i docenti del <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfD6aCVUnBJt-htWNP4Uh1fJhEK21lFQ-4un0khoIzya3T_Yg/viewform\" target=\"_blank\" rel=\"noopener\">Corso Nazionale Aspiranti Radioamatori 2026</a>.",
   footShare:"Puoi condividere e modificare quest'opera citando l'autore e mantenendo la stessa licenza.",
   footVer:"Pagina autonoma, funziona anche offline.",
-  notifyOff:"🔔 Avvisami quando esce una nuova versione",
-  notifyOnTxt:"🔔 Avvisi di aggiornamento attivi · disattiva",
-  notifyDenied:"Le notifiche sono bloccate nelle impostazioni del browser.",
-  notifyOkTitle:"LobeLab: avvisi di aggiornamento attivi",
-  notifyOkBody:"Riceverai una notifica quando verrà pubblicata una nuova versione.",
-  notifyNewTitle:"È disponibile LobeLab {v}",
-  notifyNewBody:"Clicca per ricaricare la pagina e avere la nuova versione.",
   footThree:"Motore 3D: three.js r186, © 2010-2026 three.js authors, licenza MIT",
   no3d:"Motore 3D non disponibile.",
   noWebgl:"Il browser non supporta WebGL: il visualizzatore 3D non può essere mostrato."
 }};
+try{['lobelab.notify','lobelab.notified'].forEach(k=>localStorage.removeItem(k))}catch(e){}
 let LANG=APP.defaultLanguage;
 const T=k=>(I18N[LANG]&&I18N[LANG][k]!=null)?I18N[LANG][k]:I18N.en[k];
 const L=o=>(o&&typeof o==='object')?(o[LANG]!=null?o[LANG]:o.en):o;
@@ -4926,27 +4911,6 @@ const name='lobelab-'+(sel+1)+'-'+slug+(cut.checked?'-section':'')+(mode==='abs'
 const dl=u=>{const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();if(u.startsWith('blob:'))URL.revokeObjectURL(u)},1500)};
 try{if(cv.toBlob)cv.toBlob(bl=>{if(bl)dl(URL.createObjectURL(bl));else dl(cv.toDataURL('image/png'))},'image/png');else dl(cv.toDataURL('image/png'))}catch(e){}
 window.__lobelabLastExport={name:name,w:cv.width,h:cv.height}}
-(function updates(){
-const VURL='https://bberry2020.github.io/lobelab/version.json',SITE='https://bberry2020.github.io/lobelab/';
-const row=document.getElementById('notifyRow'),btn=document.getElementById('notifyBtn'),msg=document.getElementById('notifyMsg');
-const ok=('Notification' in window)&&window.isSecureContext&&/^https?:$/.test(location.protocol)&&typeof fetch==='function';
-if(!ok)return;
-const get=k=>{try{return localStorage.getItem(k)}catch(e){return null}},set=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
-const newer=(a,b)=>{const x=String(a).split('.').map(n=>parseInt(n,10)||0),y=String(b).split('.').map(n=>parseInt(n,10)||0);for(let i=0;i<3;i++){if((x[i]||0)!==(y[i]||0))return (x[i]||0)>(y[i]||0)}return false};
-const on=()=>get('lobelab.notify')==='1'&&Notification.permission==='granted';
-function ui(){row.hidden=false;btn.textContent=T(on()?'notifyOnTxt':'notifyOff');msg.textContent=Notification.permission==='denied'?T('notifyDenied'):''}
-function show(title,body,click){try{const n=new Notification(title,{body:body,tag:'lobelab-update'});if(click)n.onclick=()=>{try{window.focus()}catch(e){}click();n.close()}}catch(e){}}
-async function check(){if(!on())return;try{const r=await fetch(VURL+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const j=await r.json();
-if(j&&j.version&&newer(j.version,APP.version)&&get('lobelab.notified')!==j.version){set('lobelab.notified',j.version);
-show(T('notifyNewTitle').replace('{v}',j.version),T('notifyNewBody'),()=>{if(location.protocol.indexOf('http')===0)location.reload();else window.open(SITE,'_blank')})}}catch(e){}}
-btn.onclick=async()=>{if(on()){set('lobelab.notify',null);ui();return}
-let p=Notification.permission;if(p==='default'){try{p=await Notification.requestPermission()}catch(e){p='denied'}}
-if(p==='granted'){set('lobelab.notify','1');show(T('notifyOkTitle'),T('notifyOkBody'));check()}ui()};
-LANG_HOOKS.push(ui);ui();check();
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check()});
-setInterval(check,6*3600*1000);
-window.__lobelabUpdates={check:check,newer:newer};
-})();
 const saveBtn=document.getElementById('save');saveBtn.addEventListener('pointerdown',e=>e.stopPropagation());saveBtn.onclick=savePNG;
 const rs=()=>{rd.setSize(W(),H());cam.aspect=W()/H();cam.updateProjectionMatrix();if(typeof applyCam==='function')applyCam()};
 if(window.ResizeObserver)new ResizeObserver(rs).observe(box);else window.addEventListener('resize',rs);

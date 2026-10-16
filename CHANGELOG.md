@@ -5,6 +5,11 @@ Entries are in Italian; the application itself is in English and Italian.
 
 Tutte le modifiche rilevanti di LobeLab. Le versioni seguono il [Semantic Versioning](https://semver.org/lang/it/).
 
+## [1.11.1] - 2026-10-16
+- Sezione Privacy nel README: nessun cookie, nessun tracciamento; nel browser vengono ricordati solo lingua e tema.
+- Pulizia automatica delle chiavi rimaste nel browser dal test delle notifiche.
+- Rimossi gli avvisi di nuova versione (pulsante "🔔 Avvisami" e notifiche del browser) e il file `version.json`.
+
 ## [1.11.0] - 2026-10-16
 - Motore 3D aggiornato da **three.js r128 a r186** (0.186.1): impacchettato con esbuild includendo solo le parti usate (circa 540 KB invece di 600 KB). Luci adattate al nuovo modello di illuminazione: l'aspetto dei solidi resta quello di prima. Richiede WebGL 2, supportato da tutti i browser recenti.
 - Avvisi di nuova versione **su richiesta**: nel piè di pagina "🔔 Avvisami quando esce una nuova versione" attiva una notifica di sistema del browser (con il permesso dell'utente) quando sul sito compare una versione più recente. Il controllo usa il nuovo file `version.json` e avviene solo per chi ha attivato l'avviso.
@@ -69,6 +74,7 @@ Tutte le modifiche rilevanti di LobeLab. Le versioni seguono il [Semantic Versio
 ## [1.0.0] - 2026-10-16
 - Prima versione: visualizzatore 3D di 12 antenne, scala colori in dB, vista in sezione, antenna immagine.
 
+[1.11.1]: https://github.com/BBerry2020/lobelab/releases/tag/v1.11.1
 [1.11.0]: https://github.com/BBerry2020/lobelab/releases/tag/v1.11.0
 [1.10.0]: https://github.com/BBerry2020/lobelab/releases/tag/v1.10.0
 [1.9.0]: https://github.com/BBerry2020/lobelab/releases/tag/v1.9.0

@@ -40,7 +40,6 @@ The interface is available in **English** (default) and **Italian**: use the fla
 - Zoom and full screen; antenna menu and view toggles in full screen.
 - Works on desktop, tablet and phone; dark theme by default, light theme one click away.
 - English and Italian interface, with the choice remembered between visits.
-- **Optional update notifications**: on the website, "🔔 Notify me" in the footer sends a browser notification when a new version is published (only with your permission, only while the page is open).
 - A single self-contained file: no installation, no internet connection needed.
 
 ### Controls
@@ -58,6 +57,9 @@ Download `index.html` from this repository or from the [latest release](https://
 
 ### How the models work
 Patterns are computed in the browser from textbook formulas. Inverted V, upright V and horizontal V dipoles are computed by summing short wire segments with a sinusoidal current. Ground is modelled as a perfect conductor using the image antenna. Gains are indicative; real ground, nearby objects and feed lines change the real pattern. In the absolute (dBi) scale each solid is scaled to an indicative peak gain (over ground where applicable), while its shape comes from the model.
+
+### Privacy
+LobeLab uses **no cookies and no tracking**, and makes no network requests. It only stores your language and theme in your browser's local storage (`lobelab.lang`, `lobelab.theme`); you can clear them from your browser's site data settings.
 
 ### Acknowledgements
 Many thanks to [A.R.I. – Associazione Radioamatori Italiani](https://www.ari.it/), and in particular to all the teachers of the **Corso Nazionale Aspiranti Radioamatori 2026**.
@@ -97,7 +99,6 @@ LobeLab mostra il solido di radiazione in 3D di 13 antenne, dall'isotropica di r
 - **Antenna immagine** sotto il suolo per le antenne modellate sopra il terreno.
 - Zoom e schermo intero; a schermo intero, menu delle antenne e interruttori di visualizzazione.
 - Funziona su computer, tablet e telefono; tema scuro di default, tema chiaro con un clic.
-- **Avvisi di aggiornamento facoltativi**: sul sito, "🔔 Avvisami" nel piè di pagina invia una notifica del browser quando esce una nuova versione (solo con il tuo permesso e a pagina aperta).
 - Interfaccia in inglese e in italiano: bandierine in alto a destra, oppure apri la pagina con `?lang=it`. La scelta viene ricordata.
 - Un solo file autonomo: niente installazione, nessuna connessione a internet richiesta.
 
@@ -118,6 +119,9 @@ Scarica `index.html` da questo repository o dall'[ultima release](https://github
 I diagrammi sono calcolati nel browser con le formule classiche. V rovesciata, V cornuta e corna sono calcolate sommando brevi tratti di filo con corrente sinusoidale. Il suolo è un conduttore perfetto, modellato con l'antenna immagine. I guadagni sono indicativi: terreno reale, oggetti vicini e linea di alimentazione cambiano il diagramma vero. Nella scala assoluta (dBi) ogni solido è scalato su un guadagno di picco indicativo (sopra il suolo dove previsto), mentre la forma è quella del modello.
 
 > ⚠️ **Avvertenza.** Le simulazioni hanno finalità esclusivamente didattiche. I valori non vanno usati per progettare, dimensionare, verificare o certificare un impianto reale, né per valutazioni di conformità o di esposizione ai campi elettromagnetici.
+
+### Privacy
+LobeLab **non usa cookie né sistemi di tracciamento** e non fa richieste di rete. Ricorda solo lingua e tema nella memoria locale del browser (`lobelab.lang`, `lobelab.theme`); si possono cancellare dalle impostazioni del browser, tra i dati dei siti.
 
 ### Ringraziamenti
 Un grazie sentito ad [A.R.I. – Associazione Radioamatori Italiani](https://www.ari.it/) e in particolare a tutti i docenti del **Corso Nazionale Aspiranti Radioamatori 2026**.
