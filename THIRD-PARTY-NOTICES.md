@@ -6,15 +6,16 @@ Its license is separate from the CC BY-SA 4.0 license of LobeLab and applies to 
 LobeLab include nel file `index.html` il seguente software di terze parti.
 La sua licenza è separata dalla CC BY-SA 4.0 di LobeLab e vale solo per quel componente.
 
-## three.js r128
+## three.js r186 (0.186.1)
 
 - Source: https://github.com/mrdoob/three.js
 - License: MIT
+- Embedded as a tree-shaken bundle (built with esbuild) containing only the parts used by LobeLab.
 
 ```
 The MIT License
 
-Copyright © 2010-2021 three.js authors
+Copyright © 2010-2026 three.js authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

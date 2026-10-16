@@ -69,7 +69,7 @@ Many thanks to [A.R.I. – Associazione Radioamatori Italiani](https://www.ari.i
 
 Suggested attribution: *"LobeLab" by BBerry2020 (https://github.com/BBerry2020/lobelab), CC BY-SA 4.0.*
 
-The embedded [three.js](https://threejs.org/) library is © 2010-2021 three.js authors, MIT License. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+The embedded [three.js](https://threejs.org/) library (r186) is © 2010-2026 three.js authors, MIT License. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 ---
 
@@ -129,4 +129,4 @@ Un grazie sentito ad [A.R.I. – Associazione Radioamatori Italiani](https://www
 
 Attribuzione suggerita: *"LobeLab" di BBerry2020 (https://github.com/BBerry2020/lobelab), licenza CC BY-SA 4.0.*
 
-La libreria [three.js](https://threejs.org/) incorporata è © 2010-2021 three.js authors, licenza MIT. Vedi [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+La libreria [three.js](https://threejs.org/) incorporata (r186) è © 2010-2026 three.js authors, licenza MIT. Vedi [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
