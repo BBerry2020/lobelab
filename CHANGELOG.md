@@ -5,6 +5,12 @@ Entries are in Italian; the application itself is in English and Italian.
 
 Tutte le modifiche rilevanti di LobeLab. Le versioni seguono il [Semantic Versioning](https://semver.org/lang/it/).
 
+## [1.10.0] - 2026-10-16
+- Interruttore **Scala assoluta (dBi)**: una scala comune a tutte le antenne, da −20 a +20 dBi, con moltiplicatori rispetto all'isotropica. Ogni solido è scalato sul guadagno di picco indicativo riportato nella descrizione.
+- Descrizioni aggiornate: dipolo lungo ~7,5 dBi, loop magnetico ~−3 dBi, Yagi 3 e 9 elementi con il valore sopra il suolo (~11 e ~16 dBi) e, tra parentesi, quello in spazio libero.
+- Pulsante **Salva immagine** (e tasto `S`): esporta in PNG la vista corrente con nome, descrizione, scala colori e crediti.
+- **Tema scuro** di default; la scelta del tema viene ricordata.
+
 ## [1.9.0] - 2026-10-16
 - Interfaccia in **inglese** di default, con l'**italiano** disponibile.
 - Selettore della lingua con bandierine in alto a destra; la scelta viene ricordata e si può forzare con `?lang=it` / `?lang=en`.
@@ -53,4 +59,5 @@ Tutte le modifiche rilevanti di LobeLab. Le versioni seguono il [Semantic Versio
 ## [1.0.0] - 2026-10-16
 - Prima versione: visualizzatore 3D di 12 antenne, scala colori in dB, vista in sezione, antenna immagine.
 
+[1.10.0]: https://github.com/BBerry2020/lobelab/releases/tag/v1.10.0
 [1.9.0]: https://github.com/BBerry2020/lobelab/releases/tag/v1.9.0

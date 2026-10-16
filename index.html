@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
   LobeLab - Antenna radiation pattern simulator
-  Version 1.9.0 (2026-10-16)
+  Version 1.10.0 (2026-10-16)
   Copyright (c) 2026 BBerry2020 - https://github.com/BBerry2020
   Source code: https://github.com/BBerry2020/lobelab
   Languages: English (default), Italiano. Use ?lang=it or the flag buttons.
@@ -20,6 +20,9 @@
   The work is provided "as is", without warranty of any kind.
 
   CHANGELOG
+  1.10.0 (2026-10-16) Absolute scale toggle (dBi, indicative peak gain);
+                      "Save image" button (PNG, also with the S key);
+                      dark theme by default, choice remembered.
   1.9.0 (2026-10-16)  English by default, Italian available; language switch
                       with flags at the top right, remembered between visits.
   1.8.0 (2026-10-16)  Named LobeLab; prepared for publication on GitHub.
@@ -69,7 +72,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 -->
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -79,7 +82,7 @@
 <link rel="author" href="https://github.com/BBerry2020">
 <meta name="copyright" content="© 2026 BBerry2020 · CC BY-SA 4.0">
 <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
-<meta name="version" content="1.9.0">
+<meta name="version" content="1.10.0">
 <meta name="date" content="2026-10-16">
 <style>
 :root{--bg:#fbfaf7;--fg:#1f1e1c;--muted:#6b6a65;--card:#ffffff;--border:#e4e2da;--accent:#0f6e56;--accent-bg:#e1f5ee;--grid:#cfccc2;--real:#3d3d3a;--img:#7F77DD;--fill:#1D9E75;--code:#f1efe8}
@@ -147,7 +150,7 @@ code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:.92em}
 .tools button:hover{border-color:var(--accent);color:var(--accent)}
 .tools button svg{width:18px;height:18px}
 .zlab{position:absolute;left:10px;bottom:10px;font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:2px 8px;z-index:2}
-.fsname{display:none;position:absolute;left:10px;top:10px;z-index:3;max-width:calc(100% - 200px)}
+.fsname{display:none;position:absolute;left:10px;top:10px;z-index:3;max-width:calc(100% - 250px)}
 .fsname select{font:600 14px system-ui,sans-serif;color:var(--fg);background:var(--card);border:1px solid var(--border);border-radius:8px;height:36px;padding:0 30px 0 10px;max-width:100%;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 15px) 16px,calc(100% - 10px) 16px;background-size:5px 5px;background-repeat:no-repeat}
 .fsname select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .fsname select optgroup,.fsname select option{color:#1f1e1c;background:#fff}
@@ -178,9 +181,10 @@ code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:.92em}
 .lgs{display:none}
 .viewer:-webkit-full-screen .fsname{display:block}
 body.noscroll{overflow:hidden}
-.t100{bottom:100%}.t90{bottom:90%}.t66{bottom:66.6%}.t33{bottom:33.3%}.t0{bottom:0}
+.tk span{bottom:var(--p)}
 @media (max-width:600px){
-.ftog{left:10px;right:10px}
+.ftog{left:10px;right:10px;gap:5px;flex-wrap:nowrap}
+.ftog button{height:32px;padding:0 9px;font-size:12px;gap:5px}
 .fsn{display:none}.lgl{display:none}.lgs{display:inline}
 .fsbar{font-size:12px}
 .viewer:fullscreen .zlab,.viewer.pseudo-fs .zlab{bottom:52px}
@@ -193,11 +197,10 @@ body.noscroll{overflow:hidden}
 .tk b{display:block;min-width:0}
 .tk i{display:block;margin-left:0}
 .tk em{display:none}
-.tk .t0,.tk .t33,.tk .t66{text-align:left}
-.tk .t33,.tk .t66{text-align:center}
-.tk .t100{text-align:right}
-.tk span{bottom:auto;top:0;transform:translateX(-50%)}
-.tk .t100{left:100%;transform:translateX(-100%)}.tk .t90{display:none}.tk .t66{left:66.6%}.tk .t33{left:33.3%}.tk .t0{left:0;transform:none}
+.tk span{bottom:auto;top:0;left:var(--p);transform:translateX(-50%);text-align:center}
+.tk span.first{transform:none;text-align:left}
+.tk span.last{transform:translateX(-100%);text-align:right}
+.tk span.minor{display:none}
 .viewer:fullscreen .cvw,.viewer.pseudo-fs .cvw{flex:1;min-height:0}
 .viewer:-webkit-full-screen .cvw{flex:1;min-height:0}
 .viewer:fullscreen .scale,.viewer.pseudo-fs .scale{flex:none}
@@ -240,7 +243,7 @@ footer a{color:inherit}
 </div>
 <h1>LobeLab</h1>
 <p class="sub" data-i="sub">Antenna radiation pattern simulator</p>
-<p class="ver" id="verLabel" data-i="ver">Version 1.9.0 · 16 October 2026</p>
+<p class="ver" id="verLabel" data-i="ver">Version 1.10.0 · 16 October 2026</p>
 <p data-i="intro">Thirteen antennas compared: radiation solid, dB scale, cross-section and image antenna below the ground.</p>
 </header>
 
@@ -257,6 +260,7 @@ footer a{color:inherit}
 <button type="button" id="zout" data-it="zoutT" data-ia="zoutA">−</button>
 <button type="button" id="zin" data-it="zinT" data-ia="zinA">+</button>
 <button type="button" id="zres" data-it="zresT" data-ia="zresA"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
+<button type="button" id="save" data-it="saveT" data-ia="saveA"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></button>
 <button type="button" id="fsb"><svg id="fsi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 </div>
 <div class="zlab" id="zlab">Zoom 100%</div>
@@ -264,15 +268,10 @@ footer a{color:inherit}
 <button type="button" id="tcut" aria-pressed="false" data-i="tcut" data-it="cutLabel">Section</button>
 <button type="button" id="timg" aria-pressed="true" data-i="timg">Image</button>
 <button type="button" id="trot" aria-pressed="true" data-i="trot" data-it="rotLabel">Rotation</button>
+<button type="button" id="tdbi" aria-pressed="false" data-it="dbiLabel">dBi</button>
 </div>
 </div>
-<div class="scale" data-ia="scaleAria"><div class="bar"></div><div class="tk">
-<span class="t100" data-it="t100"><b>0 dB</b><i>×1</i><em> max</em></span>
-<span class="t90" data-it="t90"><b class="d">−3 dB</b><i data-i="m05">×0.5</i></span>
-<span class="t66" data-it="t66"><b class="d">−10 dB</b><i data-i="m01">×0.1</i></span>
-<span class="t33" data-it="t33"><b class="d">−20 dB</b><i data-i="m001">×0.01</i></span>
-<span class="t0" data-it="t0"><b class="d">−30 dB</b><i data-i="m0001">×0.001</i></span>
-</div></div>
+<div class="scale" id="scale"><div class="bar"></div><div class="tk" id="tk"></div></div>
 </div>
 <div class="fsbar" aria-live="polite">
 <div id="fsdesc"></div>
@@ -280,7 +279,7 @@ footer a{color:inherit}
 </div>
 </div>
 <div class="ft"><div><b id="nm"></b><br><span id="ds"></span></div>
-<div class="ck"><label><input type="checkbox" id="cut"> <span data-i="cutLabel">Show cross-section</span></label><label id="iml"><input type="checkbox" id="img" checked> <span data-i="imgLabel">Image antenna</span></label><label><input type="checkbox" id="rot" checked> <span data-i="rotLabel">Auto-rotate</span></label></div></div>
+<div class="ck"><label><input type="checkbox" id="cut"> <span data-i="cutLabel">Show cross-section</span></label><label id="iml"><input type="checkbox" id="img" checked> <span data-i="imgLabel">Image antenna</span></label><label><input type="checkbox" id="rot" checked> <span data-i="rotLabel">Auto-rotate</span></label><label><input type="checkbox" id="dbi"> <span data-i="dbiLabel">Absolute scale (dBi)</span></label></div></div>
 <p class="legend" style="margin-top:8px" data-i="legend"></p>
 <h3 data-i="scaleH">The colour scale</h3>
 <ul>
@@ -291,6 +290,7 @@ footer a{color:inherit}
 </ul>
 <p data-i="sPower"></p>
 <p data-i="sRel"></p>
+<p data-i="sDbi"></p>
 </section>
 
 <section id="note">
@@ -329,7 +329,7 @@ if(window.console!==c){try{window.console=c}catch(e){}}})();
 <script>
 /*!
  * LobeLab - Antenna radiation pattern simulator
- * Version 1.9.0 (2026-10-16)
+ * Version 1.10.0 (2026-10-16)
  * Copyright (c) 2026 BBerry2020 - https://github.com/BBerry2020
  * Licence CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
  * Educational simulations only: data not valid for real-world use.
@@ -337,7 +337,7 @@ if(window.console!==c){try{window.console=c}catch(e){}}})();
 const APP=Object.freeze({
   name:"LobeLab",
   subtitle:{en:"Antenna radiation pattern simulator",it:"Simulazione di modelli di diagramma di radiazione"},
-  version:"1.9.0",
+  version:"1.10.0",
   date:"2026-10-16",
   author:"BBerry2020",
   authorUrl:"https://github.com/BBerry2020",
@@ -364,7 +364,7 @@ en:{
   intro:"Thirteen antennas compared: radiation solid, dB scale, cross-section and image antenna below the ground.",
   viewerH:"Viewer",
   viewerP:"Pick an antenna and drag to rotate the solid. Use the buttons at the top right, the mouse wheel or a pinch on touch screens to zoom and to go full screen. “Show cross-section” cuts the solid in half and shows the antenna inside it and, for antennas over ground, the image antenna below the ground.",
-  viewerAria:"3D viewer: drag to rotate, + and − to zoom, F for full screen",
+  viewerAria:"3D viewer: drag to rotate, + and − to zoom, F for full screen, S to save an image",
   selAria:"Choose the antenna",
   toolsAria:"Viewer controls",
   zoutT:"Zoom out (− key)",zoutA:"Zoom out",
@@ -385,7 +385,13 @@ en:{
   t66:"−10 dB: power ×0.1, one tenth",
   t33:"−20 dB: power ×0.01, one hundredth",
   t0:"−30 dB: power ×0.001, one thousandth",
-  m05:"×0.5",m01:"×0.1",m001:"×0.01",m0001:"×0.001",
+  dbiLabel:"Absolute scale (dBi)",
+  saveT:"Save image as PNG (S key)",saveA:"Save image",
+  scaleRelName:"dB relative to the maximum",scaleDbiName:"dBi, indicative peak gain",
+  scaleAriaDbi:"Colour scale in dBi with power multiplier relative to the isotropic antenna",
+  u20:"+20 dBi: 100 times the isotropic antenna",u10:"+10 dBi: 10 times the isotropic antenna",u0:"0 dBi: same as the isotropic antenna",um10:"−10 dBi: one tenth of the isotropic antenna",um20:"−20 dBi: one hundredth of the isotropic antenna",
+  sDbi:"With <b>Absolute scale (dBi)</b> turned on, all antennas share one scale, compared with the isotropic antenna: each solid is scaled so that its maximum equals the <b>indicative peak gain</b> given in its description, while the shape comes from the model. Now you can see how much the 9-element Yagi really stands out from the dipole and the isotropic antenna. Here the multipliers are relative to the isotropic antenna: ×10 means ten times the power in that direction. Antennas over ground include the gain from the ground reflection; for the Yagis the free-space value is shown in brackets.",
+  imgSaved:"Image saved",
   fsleg:SW_R+" real &nbsp;"+SW_I+" image<span class=\"lgl\"> · cones = current direction · grey disc = ground · beams point right · heights not to scale</span><span class=\"lgs\"> · cones = current · disc = ground</span>",
   fslegT:"Shown in cross-section: real antenna in dark grey, image antenna in purple; the dot is the feed point; the cones show the current direction; the grey disc is the ground; directional antennas point to the right; heights are schematic, not to scale",
   legend:"In cross-section: "+SW_R+" real antenna &nbsp; "+SW_I+" image antenna &nbsp; cones = current direction · grey disc = ground · directional antennas point right (+x) · heights schematic, not to scale",
@@ -395,7 +401,7 @@ en:{
   sGreen:"<b>Green</b>: around −20 dB, one hundredth.",
   sBlue:"<b>Blue</b>: −30 dB and below, the nulls.",
   sPower:"Next to each dB value is the <b>power multiplier</b> relative to the direction of maximum. Every −10 dB the power is divided by 10; every −3 dB it roughly halves. For example, if the signal in the direction of maximum is equivalent to 100 W, it is equivalent to 50 W at −3 dB, 10 W at −10 dB, 1 W at −20 dB and 0.1 W at −30 dB.",
-  sRel:"Colour and radius show the same quantity. The scale is relative to each antenna's own maximum: the red of the 9-element Yagi (about 13 dBi) is worth far more in absolute terms than the red of the dipole (2.15 dBi).",
+  sRel:"Colour and radius show the same quantity. By default the scale is relative to each antenna's own maximum: the red of the 9-element Yagi (about 16 dBi over ground) is worth far more in absolute terms than the red of the dipole (2.15 dBi).",
   notesH:"Model notes",
   note1:"<b>Image antenna</b>: a conducting ground behaves like a mirror. In the image, the horizontal component of the current is reversed while the vertical one stays the same. This is why, for horizontal antennas, the fields cancel at the horizon and the lobe rises.",
   note2:"These are <b>simplified theoretical models</b> computed in the browser: perfect ground, antenna clear of obstacles, indicative gains. The bent dipoles (inverted V, upright V and horizontal V) are computed by adding up the contribution of every wire segment.",
@@ -419,7 +425,7 @@ it:{
   intro:"Tredici antenne a confronto: solido di radiazione, scala in dB, sezione e antenna immagine sotto il suolo.",
   viewerH:"Visualizzatore",
   viewerP:"Scegli un'antenna e trascina per ruotare il solido; con i pulsanti in alto a destra, la rotella del mouse o il pizzico su touch puoi fare lo zoom e passare a schermo intero. \"Mostra in sezione\" taglia il solido a metà e mostra l'antenna al suo interno e, per le antenne con suolo, l'antenna immagine sotto il terreno.",
-  viewerAria:"Visualizzatore 3D: trascina per ruotare, + e − per lo zoom, F per lo schermo intero",
+  viewerAria:"Visualizzatore 3D: trascina per ruotare, + e − per lo zoom, F per lo schermo intero, S per salvare un'immagine",
   selAria:"Scegli l'antenna",
   toolsAria:"Comandi del visualizzatore",
   zoutT:"Riduci (tasto −)",zoutA:"Riduci",
@@ -440,7 +446,13 @@ it:{
   t66:"−10 dB: potenza ×0,1, un decimo",
   t33:"−20 dB: potenza ×0,01, un centesimo",
   t0:"−30 dB: potenza ×0,001, un millesimo",
-  m05:"×0,5",m01:"×0,1",m001:"×0,01",m0001:"×0,001",
+  dbiLabel:"Scala assoluta (dBi)",
+  saveT:"Salva immagine in PNG (tasto S)",saveA:"Salva immagine",
+  scaleRelName:"dB relativi al massimo",scaleDbiName:"dBi, guadagno di picco indicativo",
+  scaleAriaDbi:"Scala colori in dBi con moltiplicatore di potenza rispetto all'antenna isotropica",
+  u20:"+20 dBi: 100 volte l'antenna isotropica",u10:"+10 dBi: 10 volte l'antenna isotropica",u0:"0 dBi: come l'antenna isotropica",um10:"−10 dBi: un decimo dell'antenna isotropica",um20:"−20 dBi: un centesimo dell'antenna isotropica",
+  sDbi:"Con la <b>Scala assoluta (dBi)</b> attiva, tutte le antenne usano la stessa scala, riferita all'antenna isotropica: ogni solido è scalato in modo che il suo massimo sia uguale al <b>guadagno di picco indicativo</b> riportato nella descrizione, mentre la forma è quella del modello. Così si vede quanto la Yagi 9 elementi sporge davvero rispetto al dipolo e all'isotropica. Qui i moltiplicatori sono rispetto all'isotropica: ×10 vuol dire dieci volte la potenza in quella direzione. Per le antenne sopra il suolo il valore include il guadagno dovuto alla riflessione del terreno; per le Yagi tra parentesi c'è il valore in spazio libero.",
+  imgSaved:"Immagine salvata",
   fsleg:SW_R+" reale &nbsp;"+SW_I+" immagine<span class=\"lgl\"> · coni = verso della corrente · disco grigio = suolo · direttive verso destra · altezze non in scala</span><span class=\"lgs\"> · coni = corrente · disco = suolo</span>",
   fslegT:"Visibili in sezione: antenna reale in grigio scuro, antenna immagine in viola; il pallino è il punto di alimentazione; i coni indicano il verso della corrente; il disco grigio è il suolo; le antenne direttive puntano verso destra; altezze schematiche, non in scala",
   legend:"In sezione: "+SW_R+" antenna reale &nbsp; "+SW_I+" antenna immagine &nbsp; coni = verso della corrente · disco grigio = suolo · le direttive puntano verso destra (+x) · altezze schematiche, non in scala",
@@ -450,7 +462,7 @@ it:{
   sGreen:"<b>Verde</b>: intorno a −20 dB, un centesimo.",
   sBlue:"<b>Blu</b>: −30 dB e oltre, i nulli.",
   sPower:"Accanto a ogni valore in dB c'è il <b>moltiplicatore di potenza</b> rispetto alla direzione del massimo. Ogni −10 dB la potenza si divide per 10, ogni −3 dB circa si dimezza. Per esempio, se nella direzione del massimo il segnale equivale a 100 W, a −3 dB equivale a 50 W, a −10 dB a 10 W, a −20 dB a 1 W e a −30 dB a 0,1 W.",
-  sRel:"Colore e raggio rappresentano la stessa grandezza. La scala è relativa al massimo di ciascuna antenna: il rosso della Yagi 9 elementi (circa 13 dBi) vale molto di più in assoluto del rosso del dipolo (2,15 dBi).",
+  sRel:"Colore e raggio rappresentano la stessa grandezza. Di base la scala è relativa al massimo di ciascuna antenna: il rosso della Yagi 9 elementi (circa 16 dBi sopra il suolo) vale molto di più in assoluto del rosso del dipolo (2,15 dBi).",
   notesH:"Note sul modello",
   note1:"<b>Antenna immagine</b>: un suolo conduttore si comporta come uno specchio. Nell'immagine la componente orizzontale della corrente è invertita, quella verticale resta uguale. Per questo nelle antenne orizzontali i campi si cancellano all'orizzonte e il lobo si alza.",
   note2:"Sono <b>modelli teorici semplificati</b> calcolati nel browser: suolo perfetto, antenna libera da ostacoli, guadagni indicativi. I dipoli piegati (V rovesciata, V cornuta e corna) sono calcolati sommando il contributo di ogni tratto di filo.",
@@ -484,7 +496,8 @@ applyStatic();
 
 (function(){
 const root=document.documentElement;
-document.getElementById('theme').onclick=()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;root.dataset.theme=dark?'light':'dark'};
+try{const th=localStorage.getItem('lobelab.theme');if(th==='light'||th==='dark')root.dataset.theme=th}catch(e){}
+document.getElementById('theme').onclick=()=>{const nt=root.dataset.theme==='light'?'dark':'light';root.dataset.theme=nt;try{localStorage.setItem('lobelab.theme',nt)}catch(e){}};
 
 const PI=Math.PI,abs=Math.abs,cos=Math.cos,sin=Math.sin,D=PI/180;
 const dip=e=>{const c=cos(e);return abs(c)<1e-3?0:abs(cos(PI/2*sin(e))/c)};
@@ -503,19 +516,19 @@ return Math.sqrt(R[0]**2+R[1]**2+R[2]**2+Im[0]**2+Im[1]**2+Im[2]**2)+.0002}}
 const c60=cos(PI/3),s60=sin(PI/3),c45=Math.SQRT1_2;
 const G={ref:{en:'Reference',it:'Riferimento'},vert:{en:'Omnidirectional verticals',it:'Verticali omnidirezionali'},wire:{en:'Wire dipoles',it:'Dipoli filari'},loop:{en:'Loops',it:'Spire'},dir:{en:'Directional',it:'Direttive'}};
 const M=[
-{n:{en:'Isotropic',it:'Isotropica'},d:{en:'0 dBi · perfect sphere, theoretical only',it:'0 dBi · sfera perfetta, solo teorica'},f:()=>1,m:'dot',gr:'ref'},
-{n:{en:'Vertical λ/2 dipole',it:'Dipolo λ/2 verticale'},d:{en:'2.15 dBi · the pure toroid',it:'2,15 dBi · il toroide puro'},f:(e)=>dip(e),m:'v',gr:'vert'},
-{n:{en:'λ/4 ground plane',it:'Ground plane λ/4'},d:{en:'~2 dBi · toroid trimmed underneath',it:'~2 dBi · toroide alleggerito sotto'},f:(e)=>dip(e)*(e<0?.45:1),m:'v',gr:'vert'},
-{n:{en:'5/8 λ vertical',it:'Verticale 5/8 λ'},d:{en:'~3–4 dBi · low doughnut + small high lobe',it:'~3–4 dBi · ciambella bassa + lobetto alto'},f:(e)=>{const k=2*PI*.625,c=cos(e);return abs(c)<1e-3?0:abs(cos(k*sin(e))-cos(k))/c*(e<0?.45:1)},m:'v',gr:'vert'},
-{n:{en:'2×5/8 collinear (X-50 type)',it:'Collineare 2×5/8 (tipo X-50)'},d:{en:'~4–5 dBi on 2 m · flattened doughnut',it:'~4–5 dBi in 2 m · ciambella schiacciata'},f:(e)=>dip(e)*abs(cos(PI*.8*sin(e))),m:'v',gr:'vert'},
-{n:{en:'Horizontal λ/2 dipole',it:'Dipolo λ/2 orizzontale'},d:{en:'λ/2 above ground · ~7 dBi · lobes at ~30°',it:'λ/2 dal suolo · ~7 dBi · lobi a ~30°'},f:(e,p)=>wire(cos(e)*cos(p),.5)*gnd(e,PI)+.004,m:'h',g:1,gr:'wire'},
-{n:{en:'Inverted V',it:'V rovesciata'},d:{en:'apex at λ/2, arms at 90° · ~6 dBi · filled nulls',it:'apice a λ/2, bracci a 90° · ~6 dBi · nulli riempiti'},f:bent([-c45,0,-c45],[c45,0,-c45],.5),m:'iv',g:1,gr:'wire'},
-{n:{en:'Upright V dipole',it:'Dipolo a V cornuta'},d:{en:'centre at λ/2, arms 90° upward · ~7 dBi · filled nulls',it:'centro a λ/2, bracci a 90° in su · ~7 dBi · nulli riempiti'},f:bent([-c45,0,c45],[c45,0,c45],.5),m:'vc',g:1,gr:'wire'},
-{n:{en:'Horizontal V dipole ("horns")',it:'Corna (dipolo a V orizzontale)'},d:{en:'arms at 120°, λ/2 above ground · ~6–7 dBi · almost omni',it:'bracci a 120°, λ/2 dal suolo · ~6–7 dBi · quasi omni'},f:bent([c60,s60,0],[c60,-s60,0],.5),m:'corna',g:1,gr:'wire'},
-{n:{en:'1.5 λ long dipole',it:'Dipolo lungo 1,5 λ'},d:{en:'λ/2 above ground · multiple lobes',it:'λ/2 dal suolo · lobi multipli'},f:(e,p)=>wire(cos(e)*cos(p),1.5)*gnd(e,PI)+.004,m:'h',g:1,gr:'wire'},
-{n:{en:'Vertical magnetic loop',it:'Loop magnetico verticale'},d:{en:'−1 to −8 dBi · nulls along the loop axis',it:'da −1 a −8 dBi · nulli sull\'asse della spira'},f:(e,p)=>Math.sqrt(Math.max(0,1-(cos(e)*sin(p))**2))*(e<0?.45:1),m:'loop',gr:'loop'},
-{n:{en:'3-element Yagi',it:'Yagi 3 elementi'},d:{en:'λ above ground · ~7 dBi · F/B ~15 dB',it:'λ dal suolo · ~7 dBi · F/B ~15 dB'},f:(e,p)=>wire(cos(e)*sin(p),.5)*yf(cos(e)*cos(p),1.5,.18)*gnd(e,2*PI),m:'yagi',g:1,gr:'dir'},
-{n:{en:'9-element Yagi',it:'Yagi 9 elementi'},d:{en:'λ above ground · ~13 dBi · narrow beam',it:'λ dal suolo · ~13 dBi · fascio stretto'},f:(e,p)=>wire(cos(e)*sin(p),.5)*yf(cos(e)*cos(p),8,.03)*gnd(e,2*PI),m:'yagi',g:1,gr:'dir'}
+{n:{en:'Isotropic',it:'Isotropica'},d:{en:'0 dBi · perfect sphere, theoretical only',it:'0 dBi · sfera perfetta, solo teorica'},f:()=>1,m:'dot',gi:0,gr:'ref'},
+{n:{en:'Vertical λ/2 dipole',it:'Dipolo λ/2 verticale'},d:{en:'2.15 dBi · the pure toroid',it:'2,15 dBi · il toroide puro'},f:(e)=>dip(e),m:'v',gi:2.15,gr:'vert'},
+{n:{en:'λ/4 ground plane',it:'Ground plane λ/4'},d:{en:'~2 dBi · toroid trimmed underneath',it:'~2 dBi · toroide alleggerito sotto'},f:(e)=>dip(e)*(e<0?.45:1),m:'v',gi:2,gr:'vert'},
+{n:{en:'5/8 λ vertical',it:'Verticale 5/8 λ'},d:{en:'~3–4 dBi · low doughnut + small high lobe',it:'~3–4 dBi · ciambella bassa + lobetto alto'},f:(e)=>{const k=2*PI*.625,c=cos(e);return abs(c)<1e-3?0:abs(cos(k*sin(e))-cos(k))/c*(e<0?.45:1)},m:'v',gi:3.5,gr:'vert'},
+{n:{en:'2×5/8 collinear (X-50 type)',it:'Collineare 2×5/8 (tipo X-50)'},d:{en:'~4–5 dBi on 2 m · flattened doughnut',it:'~4–5 dBi in 2 m · ciambella schiacciata'},f:(e)=>dip(e)*abs(cos(PI*.8*sin(e))),m:'v',gi:4.5,gr:'vert'},
+{n:{en:'Horizontal λ/2 dipole',it:'Dipolo λ/2 orizzontale'},d:{en:'λ/2 above ground · ~7 dBi · lobes at ~30°',it:'λ/2 dal suolo · ~7 dBi · lobi a ~30°'},f:(e,p)=>wire(cos(e)*cos(p),.5)*gnd(e,PI)+.004,m:'h',g:1,gi:7,gr:'wire'},
+{n:{en:'Inverted V',it:'V rovesciata'},d:{en:'apex at λ/2, arms at 90° · ~6 dBi · filled nulls',it:'apice a λ/2, bracci a 90° · ~6 dBi · nulli riempiti'},f:bent([-c45,0,-c45],[c45,0,-c45],.5),m:'iv',g:1,gi:6,gr:'wire'},
+{n:{en:'Upright V dipole',it:'Dipolo a V cornuta'},d:{en:'centre at λ/2, arms 90° upward · ~7 dBi · filled nulls',it:'centro a λ/2, bracci a 90° in su · ~7 dBi · nulli riempiti'},f:bent([-c45,0,c45],[c45,0,c45],.5),m:'vc',g:1,gi:7,gr:'wire'},
+{n:{en:'Horizontal V dipole ("horns")',it:'Corna (dipolo a V orizzontale)'},d:{en:'arms at 120°, λ/2 above ground · ~6–7 dBi · almost omni',it:'bracci a 120°, λ/2 dal suolo · ~6–7 dBi · quasi omni'},f:bent([c60,s60,0],[c60,-s60,0],.5),m:'corna',g:1,gi:6.5,gr:'wire'},
+{n:{en:'1.5 λ long dipole',it:'Dipolo lungo 1,5 λ'},d:{en:'λ/2 above ground · ~7.5 dBi · multiple lobes',it:'λ/2 dal suolo · ~7,5 dBi · lobi multipli'},f:(e,p)=>wire(cos(e)*cos(p),1.5)*gnd(e,PI)+.004,m:'h',g:1,gi:7.5,gr:'wire'},
+{n:{en:'Vertical magnetic loop',it:'Loop magnetico verticale'},d:{en:'~−3 dBi (−1 to −8) · nulls on the loop axis',it:'~−3 dBi (da −1 a −8) · nulli sull\'asse'},f:(e,p)=>Math.sqrt(Math.max(0,1-(cos(e)*sin(p))**2))*(e<0?.45:1),m:'loop',gi:-3,gr:'loop'},
+{n:{en:'3-element Yagi',it:'Yagi 3 elementi'},d:{en:'λ above ground · ~11 dBi (7 in free space) · F/B ~15 dB',it:'λ dal suolo · ~11 dBi (7 in spazio libero) · F/B ~15 dB'},f:(e,p)=>wire(cos(e)*sin(p),.5)*yf(cos(e)*cos(p),1.5,.18)*gnd(e,2*PI),m:'yagi',g:1,gi:11,gr:'dir'},
+{n:{en:'9-element Yagi',it:'Yagi 9 elementi'},d:{en:'λ above ground · ~16 dBi (13 in free space) · narrow beam',it:'λ dal suolo · ~16 dBi (13 in spazio libero) · fascio stretto'},f:(e,p)=>wire(cos(e)*sin(p),.5)*yf(cos(e)*cos(p),8,.03)*gnd(e,2*PI),m:'yagi',g:1,gi:16,gr:'dir'}
 ];
 const NE=90,NP=180;
 function tab(m){if(m.T)return m;const T=new Float32Array((NE+1)*NP);let mx=0;
@@ -573,11 +586,11 @@ document.getElementById('nm').textContent=nm;document.getElementById('ds').textC
 const imgOk=m.g&&cut,il=document.getElementById('iml');il.style.opacity=imgOk?1:.4;il.title=!m.g?T('imgNAlabel'):(cut?'':T('imgCutOnly'));
 const fd=document.getElementById('fsdesc');fd.textContent='';const b=document.createElement('b');b.className='fsn';b.textContent=nm+' · ';fd.appendChild(b);fd.appendChild(document.createTextNode(L(m.d)));
 const ti=document.getElementById('timg');ti.disabled=!imgOk;ti.title=!m.g?T('imgNA'):(cut?T('imgLabel'):T('imgNeedCut'));}
-function build(i,cut,img){
+function build(i,cut,img){const abs=dbiCb.checked;
 if(cur){grp.remove(cur);cur.traverse(o=>{if(o.geometry)o.geometry.dispose()})}
 cur=new THREE.Group();const m=tab(M[i]);
 const np=cut?NP/2:NP,pos=[],col=[],idx=[];
-for(let a=0;a<=NE;a++){const e=-PI/2+a*PI/NE;for(let b=0;b<=np;b++){const p=b*2*PI/NP;const r=toR(val(m,a,b)/m.mx);
+for(let a=0;a<=NE;a++){const e=-PI/2+a*PI/NE;for(let b=0;b<=np;b++){const p=b*2*PI/NP;const v=val(m,a,b)/m.mx,r=abs?(v<=0?0:Math.max(0,Math.min(1,(M[i].gi+20*Math.log10(v)+20)/40))):toR(v);
 pos.push(r*cos(e)*cos(p),r*sin(e),-r*cos(e)*sin(p));const c=cmap(r);col.push(c.r,c.g,c.b)}}
 for(let a=0;a<NE;a++)for(let b=0;b<np;b++){const k=a*(np+1)+b,k2=k+np+1;idx.push(k,k2,k+1,k+1,k2,k2+1)}
 const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setAttribute('color',new THREE.Float32BufferAttribute(col,3));geo.setIndex(idx);geo.computeVertexNormals();
@@ -586,9 +599,10 @@ cur.add(new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:0x000000,wireframe
 if(m.g){const d=new THREE.Mesh(new THREE.CircleGeometry(1.15,64),new THREE.MeshBasicMaterial({color:0x888780,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false}));d.rotation.x=-PI/2;d.position.y=-.002;cur.add(d)}
 if(cut)cur.add(marker(m.m,img&&m.g));grp.add(cur);
 labels(i,cut);syncTog()}
+const dbiCb=document.getElementById('dbi');
 let sel=0;const bt=document.getElementById('bt'),cut=document.getElementById('cut'),img=document.getElementById('img'),rot=document.getElementById('rot');
 const go=()=>build(sel,cut.checked,img.checked);
-const TG=[['tcut',cut],['timg',img],['trot',rot]].map(([id,cb])=>[document.getElementById(id),cb]);
+const TG=[['tcut',cut],['timg',img],['trot',rot],['tdbi',dbiCb]].map(([id,cb])=>[document.getElementById(id),cb]);
 function syncTog(){TG.forEach(([b,cb])=>{const v=String(cb.checked);if(b.getAttribute('aria-pressed')!==v)b.setAttribute('aria-pressed',v)})}
 TG.forEach(([b,cb])=>{b.addEventListener('pointerdown',e=>e.stopPropagation());b.onclick=()=>{cb.checked=!cb.checked;cb.dispatchEvent(new Event('change'));syncTog()};cb.addEventListener('change',syncTog)});
 const BTN=[],GL=[],OG=[],OPT=[],fssel=document.getElementById('fssel');
@@ -603,7 +617,18 @@ M.forEach((m,i)=>{const s=(i+1)+'. '+L(m.n);BTN[i].textContent=s;OPT[i].textCont
 listText();
 fssel.addEventListener('change',()=>choose(parseInt(fssel.value,10)));
 fssel.addEventListener('pointerdown',e=>e.stopPropagation());
-BTN[sel].classList.add('on');fssel.value=String(sel);cut.onchange=go;img.onchange=go;go();
+BTN[sel].classList.add('on');fssel.value=String(sel);cut.onchange=go;img.onchange=go;
+const TK={rel:[[100,'0 dB','1','u0b','last','max'],[90,'−3 dB','0.5','t90','minor'],[66.6,'−10 dB','0.1','t66'],[33.3,'−20 dB','0.01','t33'],[0,'−30 dB','0.001','t0','first']],
+abs:[[100,'+20 dBi','100','u20','last'],[75,'+10 dBi','10','u10'],[50,'0 dBi','1','u0','','iso'],[25,'−10 dBi','0.1','um10'],[0,'−20 dBi','0.01','um20','first']]};
+const fmtM=s=>'×'+(LANG==='it'?s.replace('.',','):s);
+const tkMode=()=>dbiCb.checked?'abs':'rel';
+function renderTicks(){const mode=tkMode(),tk=document.getElementById('tk');tk.textContent='';
+TK[mode].forEach(([pc,lab,mul,key,cls,em])=>{const s=document.createElement('span');if(cls)s.className=cls;s.style.setProperty('--p',pc+'%');s.title=T(key==='u0b'?'t100':key);
+const b=document.createElement('b');if(!em)b.className='d';b.textContent=lab;const i=document.createElement('i');i.textContent=fmtM(mul);s.appendChild(b);s.appendChild(i);
+if(em){const e=document.createElement('em');e.textContent=' '+em;s.appendChild(e)}tk.appendChild(s)});
+document.getElementById('scale').setAttribute('aria-label',T(mode==='abs'?'scaleAriaDbi':'scaleAria'))}
+dbiCb.onchange=()=>{renderTicks();go()};
+renderTicks();go();
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)rot.checked=false;
 const D0=3.7,DMIN=1.4,DMAX=9;let dist=D0;const zlab=document.getElementById('zlab');
 function applyCam(){const f=Math.max(1,1/Math.max(.2,cam.aspect||1)),d=dist*f;cam.position.set(0,.3*d/D0,d);cam.lookAt(0,0,0)}
@@ -640,9 +665,32 @@ document.addEventListener('fullscreenchange',fsUi);document.addEventListener('we
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&viewer.classList.contains('pseudo-fs'))pseudo(false)});
 viewer.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.ctrlKey||e.metaKey||e.altKey)return;
 if(e.key==='+'||e.key==='='){zoomBy(1.25);e.preventDefault()}else if(e.key==='-'||e.key==='_'){zoomBy(1/1.25);e.preventDefault()}
-else if(e.key==='0'){document.getElementById('zres').click();e.preventDefault()}else if(e.key==='f'||e.key==='F'){toggleFs();e.preventDefault()}});
+else if(e.key==='0'){document.getElementById('zres').click();e.preventDefault()}else if(e.key==='f'||e.key==='F'){toggleFs();e.preventDefault()}else if(e.key==='s'||e.key==='S'){savePNG();e.preventDefault()}});
 fsText();setDist(D0);
-LANG_HOOKS.push(()=>{listText();labels(sel,cut.checked);fsText()});
+LANG_HOOKS.push(()=>{listText();labels(sel,cut.checked);fsText();renderTicks()});
+function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()||'#888'}
+function savePNG(){
+rd.render(sc,cam);const src=rd.domElement,sw=src.width,sh=src.height,k=Math.max(1,sw/Math.max(1,src.clientWidth));
+const pad=18*k,headH=64*k,footH=40*k,scW=170*k,FF='system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+const cv=document.createElement('canvas');cv.width=Math.round(pad+sw+scW+pad);cv.height=Math.round(headH+sh+footH);const x=cv.getContext('2d');
+x.fillStyle=cssv('--bg');x.fillRect(0,0,cv.width,cv.height);
+const m=M[sel];x.fillStyle=cssv('--fg');x.font='600 '+(19*k)+'px '+FF;x.textBaseline='alphabetic';x.fillText((sel+1)+'. '+L(m.n),pad,pad+18*k);
+x.fillStyle=cssv('--muted');x.font=(13*k)+'px '+FF;x.fillText(L(m.d),pad,pad+40*k);
+x.drawImage(src,pad,headH);
+const mode=tkMode(),bh=Math.min(sh*.72,320*k),bw=14*k,bx=pad+sw+18*k,by=headH+(sh-bh)/2;
+const gr=x.createLinearGradient(0,by+bh,0,by);[['#185FA5',0],['#1D9E75',1/3],['#EF9F27',2/3],['#E24B4A',1]].forEach(([c,o])=>gr.addColorStop(o,c));
+x.fillStyle=gr;x.fillRect(bx,by,bw,bh);x.strokeStyle=cssv('--border');x.lineWidth=k;x.strokeRect(bx,by,bw,bh);
+x.font=(12*k)+'px '+FF;x.textBaseline='middle';
+TK[mode].forEach(([pc,lab,mul,key,cls,em])=>{const y=by+bh*(1-pc/100);x.fillStyle=em?cssv('--fg'):cssv('--muted');x.fillText(lab,bx+bw+8*k,y);x.fillStyle=cssv('--accent');x.fillText(fmtM(mul),bx+bw+62*k,y)});
+x.fillStyle=cssv('--muted');x.font=(11*k)+'px '+FF;x.textBaseline='alphabetic';x.fillText(T(mode==='abs'?'scaleDbiName':'scaleRelName'),bx,by+bh+22*k);
+x.fillText('LobeLab · bberry2020.github.io/lobelab · CC BY-SA 4.0',pad,headH+sh+24*k);
+const vtxt='v'+APP.version;x.fillText(vtxt,cv.width-pad-x.measureText(vtxt).width,headH+sh+24*k);
+const slug=L(m.n).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const name='lobelab-'+(sel+1)+'-'+slug+(cut.checked?'-section':'')+(mode==='abs'?'-dbi':'')+'.png';
+const dl=u=>{const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();if(u.startsWith('blob:'))URL.revokeObjectURL(u)},1500)};
+try{if(cv.toBlob)cv.toBlob(bl=>{if(bl)dl(URL.createObjectURL(bl));else dl(cv.toDataURL('image/png'))},'image/png');else dl(cv.toDataURL('image/png'))}catch(e){}
+window.__lobelabLastExport={name:name,w:cv.width,h:cv.height}}
+const saveBtn=document.getElementById('save');saveBtn.addEventListener('pointerdown',e=>e.stopPropagation());saveBtn.onclick=savePNG;
 const rs=()=>{rd.setSize(W(),H());cam.aspect=W()/H();cam.updateProjectionMatrix();if(typeof applyCam==='function')applyCam()};
 if(window.ResizeObserver)new ResizeObserver(rs).observe(box);else window.addEventListener('resize',rs);
 (function loop(){if(rot.checked)grp.rotation.y+=.004;syncTog();rd.render(sc,cam);requestAnimationFrame(loop)})();

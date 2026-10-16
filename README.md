@@ -32,10 +32,12 @@ The interface is available in **English** (default) and **Italian**: use the fla
 
 ### Features
 - 3D solid you can rotate, with a colour scale in dB relative to the maximum and the matching power multiplier (×1, ×0.5, ×0.1, ×0.01, ×0.001).
+- **Absolute scale (dBi)**: one common scale for all antennas, compared with the isotropic antenna, so you can see how much a Yagi really stands out.
+- **Save image**: exports the current view as a PNG, with antenna name, colour scale and credits.
 - **Section view**: cuts the solid in half and shows the antenna, the current direction and the feed point.
 - **Image antenna** below the ground for antennas modelled over ground.
 - Zoom and full screen; antenna menu and view toggles in full screen.
-- Works on desktop, tablet and phone, in light and dark theme.
+- Works on desktop, tablet and phone; dark theme by default, light theme one click away.
 - English and Italian interface, with the choice remembered between visits.
 - A single self-contained file: no installation, no internet connection needed.
 
@@ -47,12 +49,13 @@ The interface is available in **English** (default) and **Italian**: use the fla
 | Zoom | wheel, pinch, **+** **−** buttons | `+` `−` |
 | Reset view | ↺ button | `0` |
 | Full screen | ⛶ button | `F` (`Esc` to exit) |
+| Save image (PNG) | ⤓ button | `S` |
 
 ### Use it offline
 Download `index.html` from this repository or from the [latest release](https://github.com/BBerry2020/lobelab/releases/latest) and open it in any modern browser.
 
 ### How the models work
-Patterns are computed in the browser from textbook formulas. Inverted V, upright V and horizontal V dipoles are computed by summing short wire segments with a sinusoidal current. Ground is modelled as a perfect conductor using the image antenna. Gains are indicative; real ground, nearby objects and feed lines change the real pattern.
+Patterns are computed in the browser from textbook formulas. Inverted V, upright V and horizontal V dipoles are computed by summing short wire segments with a sinusoidal current. Ground is modelled as a perfect conductor using the image antenna. Gains are indicative; real ground, nearby objects and feed lines change the real pattern. In the absolute (dBi) scale each solid is scaled to an indicative peak gain (over ground where applicable), while its shape comes from the model.
 
 ### License
 © 2026 [BBerry2020](https://github.com/BBerry2020) — LobeLab is released under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/) license (CC BY-SA 4.0). You may share and adapt it, also commercially, if you give credit and release your changes under the same license.
@@ -80,10 +83,12 @@ LobeLab mostra il solido di radiazione in 3D di 13 antenne, dall'isotropica di r
 
 ### Funzioni
 - Solido 3D ruotabile, con scala colori in dB relativi al massimo e moltiplicatore di potenza (×1, ×0,5, ×0,1, ×0,01, ×0,001).
+- **Scala assoluta (dBi)**: una sola scala per tutte le antenne, riferita all'isotropica, per vedere quanto una Yagi sporge davvero.
+- **Salva immagine**: esporta la vista corrente in PNG, con nome dell'antenna, scala colori e crediti.
 - **Vista in sezione**: taglia il solido a metà e mostra l'antenna, il verso della corrente e il punto di alimentazione.
 - **Antenna immagine** sotto il suolo per le antenne modellate sopra il terreno.
 - Zoom e schermo intero; a schermo intero, menu delle antenne e interruttori di visualizzazione.
-- Funziona su computer, tablet e telefono, con tema chiaro e scuro.
+- Funziona su computer, tablet e telefono; tema scuro di default, tema chiaro con un clic.
 - Interfaccia in inglese e in italiano: bandierine in alto a destra, oppure apri la pagina con `?lang=it`. La scelta viene ricordata.
 - Un solo file autonomo: niente installazione, nessuna connessione a internet richiesta.
 
@@ -95,12 +100,13 @@ LobeLab mostra il solido di radiazione in 3D di 13 antenne, dall'isotropica di r
 | Zoom | rotella, pizzico, pulsanti **+** **−** | `+` `−` |
 | Ripristina vista | pulsante ↺ | `0` |
 | Schermo intero | pulsante ⛶ | `F` (`Esc` per uscire) |
+| Salva immagine (PNG) | pulsante ⤓ | `S` |
 
 ### Uso offline
 Scarica `index.html` da questo repository o dall'[ultima release](https://github.com/BBerry2020/lobelab/releases/latest) e aprilo con un browser moderno.
 
 ### Come funzionano i modelli
-I diagrammi sono calcolati nel browser con le formule classiche. V rovesciata, V cornuta e corna sono calcolate sommando brevi tratti di filo con corrente sinusoidale. Il suolo è un conduttore perfetto, modellato con l'antenna immagine. I guadagni sono indicativi: terreno reale, oggetti vicini e linea di alimentazione cambiano il diagramma vero.
+I diagrammi sono calcolati nel browser con le formule classiche. V rovesciata, V cornuta e corna sono calcolate sommando brevi tratti di filo con corrente sinusoidale. Il suolo è un conduttore perfetto, modellato con l'antenna immagine. I guadagni sono indicativi: terreno reale, oggetti vicini e linea di alimentazione cambiano il diagramma vero. Nella scala assoluta (dBi) ogni solido è scalato su un guadagno di picco indicativo (sopra il suolo dove previsto), mentre la forma è quella del modello.
 
 > ⚠️ **Avvertenza.** Le simulazioni hanno finalità esclusivamente didattiche. I valori non vanno usati per progettare, dimensionare, verificare o certificare un impianto reale, né per valutazioni di conformità o di esposizione ai campi elettromagnetici.
 
