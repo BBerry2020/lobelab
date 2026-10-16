@@ -5,6 +5,15 @@ Entries are in Italian; the application itself is in English and Italian.
 
 Tutte le modifiche rilevanti di LobeLab. Le versioni seguono il [Semantic Versioning](https://semver.org/lang/it/).
 
+## [Unreleased]
+- Avvisi di nuova versione **su richiesta**: nel piè di pagina "🔔 Avvisami quando esce una nuova versione" attiva una notifica di sistema del browser (con il permesso dell'utente) quando sul sito compare una versione più recente. Il controllo usa il nuovo file `version.json` e avviene solo per chi ha attivato l'avviso.
+- Numero di versione spostato dall'intestazione al piè di pagina, nella riga del copyright.
+- Sotto il visualizzatore, al posto della spiegazione della scala colori, una scheda **Storia e approfondimenti** per ogni antenna (EN/IT), con il link a Wikipedia (voce italiana dove esiste, altrimenti inglese) e il rimando a *The ARRL Antenna Book*.
+- Rimosso il titolo "Visualizzatore"; la nota sulla scala dBi passa nelle "Note sul modello".
+- Sottotitolo che evidenzia lo scopo didattico: "Educational antenna radiation pattern simulator" / "Simulatore didattico di diagrammi di radiazione".
+- Frase introduttiva riscritta senza il numero di antenne: descrive cosa fa la pagina (confronto in 3D dei diagrammi di radiazione, scala dB o dBi, sezione, antenna immagine).
+- Ringraziamenti ad A.R.I. – Associazione Radioamatori Italiani e ai docenti del Corso Nazionale Aspiranti Radioamatori 2026: riga nel piè di pagina (EN/IT) e sezione nel README. Nella versione italiana il nome del corso è un link alla pagina del corso.
+
 ## [1.10.0] - 2026-10-16
 - Interruttore **Scala assoluta (dBi)**: una scala comune a tutte le antenne, da −20 a +20 dBi, con moltiplicatori rispetto all'isotropica. Ogni solido è scalato sul guadagno di picco indicativo riportato nella descrizione.
 - Descrizioni aggiornate: dipolo lungo ~7,5 dBi, loop magnetico ~−3 dBi, Yagi 3 e 9 elementi con il valore sopra il suolo (~11 e ~16 dBi) e, tra parentesi, quello in spazio libero.

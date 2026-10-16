@@ -3,7 +3,7 @@
 **Interactive 3D radiation pattern simulator for common ham radio antennas.**
 Educational, runs offline in a single HTML file.
 
-*Simulazione di modelli di diagramma di radiazione* · [English](#english) · [Italiano](#italiano)
+*Simulatore didattico di diagrammi di radiazione* · [English](#english) · [Italiano](#italiano)
 
 ![LobeLab: a 3-element Yagi shown in cross-section, with the antenna and its image below the ground](docs/screenshot.png)
 
@@ -33,12 +33,14 @@ The interface is available in **English** (default) and **Italian**: use the fla
 ### Features
 - 3D solid you can rotate, with a colour scale in dB relative to the maximum and the matching power multiplier (×1, ×0.5, ×0.1, ×0.01, ×0.001).
 - **Absolute scale (dBi)**: one common scale for all antennas, compared with the isotropic antenna, so you can see how much a Yagi really stands out.
+- **History and background** for every antenna, with a link to Wikipedia for further reading.
 - **Save image**: exports the current view as a PNG, with antenna name, colour scale and credits.
 - **Section view**: cuts the solid in half and shows the antenna, the current direction and the feed point.
 - **Image antenna** below the ground for antennas modelled over ground.
 - Zoom and full screen; antenna menu and view toggles in full screen.
 - Works on desktop, tablet and phone; dark theme by default, light theme one click away.
 - English and Italian interface, with the choice remembered between visits.
+- **Optional update notifications**: on the website, "🔔 Notify me" in the footer sends a browser notification when a new version is published (only with your permission, only while the page is open).
 - A single self-contained file: no installation, no internet connection needed.
 
 ### Controls
@@ -56,6 +58,11 @@ Download `index.html` from this repository or from the [latest release](https://
 
 ### How the models work
 Patterns are computed in the browser from textbook formulas. Inverted V, upright V and horizontal V dipoles are computed by summing short wire segments with a sinusoidal current. Ground is modelled as a perfect conductor using the image antenna. Gains are indicative; real ground, nearby objects and feed lines change the real pattern. In the absolute (dBi) scale each solid is scaled to an indicative peak gain (over ground where applicable), while its shape comes from the model.
+
+### Acknowledgements
+Many thanks to [A.R.I. – Associazione Radioamatori Italiani](https://www.ari.it/), and in particular to all the teachers of the **Corso Nazionale Aspiranti Radioamatori 2026**.
+
+*LobeLab is an independent project and is not affiliated with or endorsed by A.R.I.*
 
 ### License
 © 2026 [BBerry2020](https://github.com/BBerry2020) — LobeLab is released under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/) license (CC BY-SA 4.0). You may share and adapt it, also commercially, if you give credit and release your changes under the same license.
@@ -84,11 +91,13 @@ LobeLab mostra il solido di radiazione in 3D di 13 antenne, dall'isotropica di r
 ### Funzioni
 - Solido 3D ruotabile, con scala colori in dB relativi al massimo e moltiplicatore di potenza (×1, ×0,5, ×0,1, ×0,01, ×0,001).
 - **Scala assoluta (dBi)**: una sola scala per tutte le antenne, riferita all'isotropica, per vedere quanto una Yagi sporge davvero.
+- **Storia e approfondimenti** per ogni antenna, con il link a Wikipedia per saperne di più.
 - **Salva immagine**: esporta la vista corrente in PNG, con nome dell'antenna, scala colori e crediti.
 - **Vista in sezione**: taglia il solido a metà e mostra l'antenna, il verso della corrente e il punto di alimentazione.
 - **Antenna immagine** sotto il suolo per le antenne modellate sopra il terreno.
 - Zoom e schermo intero; a schermo intero, menu delle antenne e interruttori di visualizzazione.
 - Funziona su computer, tablet e telefono; tema scuro di default, tema chiaro con un clic.
+- **Avvisi di aggiornamento facoltativi**: sul sito, "🔔 Avvisami" nel piè di pagina invia una notifica del browser quando esce una nuova versione (solo con il tuo permesso e a pagina aperta).
 - Interfaccia in inglese e in italiano: bandierine in alto a destra, oppure apri la pagina con `?lang=it`. La scelta viene ricordata.
 - Un solo file autonomo: niente installazione, nessuna connessione a internet richiesta.
 
@@ -109,6 +118,11 @@ Scarica `index.html` da questo repository o dall'[ultima release](https://github
 I diagrammi sono calcolati nel browser con le formule classiche. V rovesciata, V cornuta e corna sono calcolate sommando brevi tratti di filo con corrente sinusoidale. Il suolo è un conduttore perfetto, modellato con l'antenna immagine. I guadagni sono indicativi: terreno reale, oggetti vicini e linea di alimentazione cambiano il diagramma vero. Nella scala assoluta (dBi) ogni solido è scalato su un guadagno di picco indicativo (sopra il suolo dove previsto), mentre la forma è quella del modello.
 
 > ⚠️ **Avvertenza.** Le simulazioni hanno finalità esclusivamente didattiche. I valori non vanno usati per progettare, dimensionare, verificare o certificare un impianto reale, né per valutazioni di conformità o di esposizione ai campi elettromagnetici.
+
+### Ringraziamenti
+Un grazie sentito ad [A.R.I. – Associazione Radioamatori Italiani](https://www.ari.it/) e in particolare a tutti i docenti del **Corso Nazionale Aspiranti Radioamatori 2026**.
+
+*LobeLab è un progetto indipendente, non affiliato ad A.R.I. né da essa approvato.*
 
 ### Licenza
 © 2026 [BBerry2020](https://github.com/BBerry2020) — LobeLab è distribuito con licenza [Creative Commons Attribuzione - Condividi allo stesso modo 4.0 Internazionale](https://creativecommons.org/licenses/by-sa/4.0/deed.it) (CC BY-SA 4.0). Puoi condividerlo e modificarlo, anche a fini commerciali, citando l'autore e distribuendo le modifiche con la stessa licenza.

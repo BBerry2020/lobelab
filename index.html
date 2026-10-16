@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
-  LobeLab - Antenna radiation pattern simulator
-  Version 1.10.0 (2026-10-16)
+  LobeLab - Educational antenna radiation pattern simulator
+  Version 1.10.98 (2026-10-16)
   Copyright (c) 2026 BBerry2020 - https://github.com/BBerry2020
   Source code: https://github.com/BBerry2020/lobelab
   Languages: English (default), Italiano. Use ?lang=it or the flag buttons.
@@ -76,13 +76,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LobeLab · Antenna radiation pattern simulator</title>
+<title>LobeLab · Educational antenna radiation pattern simulator</title>
 <meta name="author" content="BBerry2020">
-<meta name="description" content="LobeLab: educational 3D radiation patterns of 13 ham radio antennas, in English and Italian.">
+<meta name="description" content="LobeLab: educational 3D radiation patterns of the most common ham radio antennas, in English and Italian.">
 <link rel="author" href="https://github.com/BBerry2020">
 <meta name="copyright" content="© 2026 BBerry2020 · CC BY-SA 4.0">
 <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
-<meta name="version" content="1.10.0">
+<meta name="version" content="1.10.98">
 <meta name="date" content="2026-10-16">
 <style>
 :root{--bg:#fbfaf7;--fg:#1f1e1c;--muted:#6b6a65;--card:#ffffff;--border:#e4e2da;--accent:#0f6e56;--accent-bg:#e1f5ee;--grid:#cfccc2;--real:#3d3d3a;--img:#7F77DD;--fill:#1D9E75;--code:#f1efe8}
@@ -212,10 +212,17 @@ body.noscroll{overflow:hidden}
 .ck{display:flex;flex-direction:column;gap:4px}
 .ck label{display:flex;align-items:center;gap:6px;cursor:pointer}
 .sw{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle;box-shadow:0 0 0 1px var(--border);margin:0 2px}
+.info{margin:18px 0 4px;padding:14px 16px;border:1px solid var(--border);border-radius:10px;background:var(--bg)}
+.info h3{margin:0 0 6px}
+.info p{margin:0 0 8px}
+.info .refs{font-size:13px;color:var(--muted);margin:0}
+.info a{color:var(--accent)}
 .legend{font-size:12px;color:var(--muted);margin:0 0 10px}
 footer{color:var(--muted);font-size:13px;text-align:center;margin-top:28px}
 .sub{font-size:18px;color:var(--fg);margin:0 0 8px;font-weight:500}
-.ver{display:inline-block;font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:2px 10px;margin:0 0 10px}
+.linkbtn{font:inherit;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.linkbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fver{display:inline-block;font-size:12px;border:1px solid var(--border);border-radius:999px;padding:0 8px}
 footer a{color:inherit}
 .warn{border-color:#EF9F27;background:color-mix(in srgb,#EF9F27 9%,var(--card))}
 .warn h2{color:#BA7517}
@@ -242,13 +249,11 @@ footer a{color:inherit}
 <button class="theme" id="theme" type="button" data-i="theme">Light/dark theme</button>
 </div>
 <h1>LobeLab</h1>
-<p class="sub" data-i="sub">Antenna radiation pattern simulator</p>
-<p class="ver" id="verLabel" data-i="ver">Version 1.10.0 · 16 October 2026</p>
-<p data-i="intro">Thirteen antennas compared: radiation solid, dB scale, cross-section and image antenna below the ground.</p>
+<p class="sub" data-i="sub">Educational antenna radiation pattern simulator</p>
+<p data-i="intro">Compare the 3D radiation patterns of the most common ham radio antennas, from dipoles and verticals to loops and Yagis: dB or dBi colour scale, cross-section view and image antenna below the ground.</p>
 </header>
 
 <section id="v3d">
-<h2 data-i="viewerH">Viewer</h2>
 <p data-i="viewerP"></p>
 <div class="bt" id="bt"></div>
 <div class="viewer" id="viewer" tabindex="0" data-ia="viewerAria">
@@ -281,16 +286,11 @@ footer a{color:inherit}
 <div class="ft"><div><b id="nm"></b><br><span id="ds"></span></div>
 <div class="ck"><label><input type="checkbox" id="cut"> <span data-i="cutLabel">Show cross-section</span></label><label id="iml"><input type="checkbox" id="img" checked> <span data-i="imgLabel">Image antenna</span></label><label><input type="checkbox" id="rot" checked> <span data-i="rotLabel">Auto-rotate</span></label><label><input type="checkbox" id="dbi"> <span data-i="dbiLabel">Absolute scale (dBi)</span></label></div></div>
 <p class="legend" style="margin-top:8px" data-i="legend"></p>
-<h3 data-i="scaleH">The colour scale</h3>
-<ul>
-<li data-i="sRed"></li>
-<li data-i="sOrange"></li>
-<li data-i="sGreen"></li>
-<li data-i="sBlue"></li>
-</ul>
-<p data-i="sPower"></p>
-<p data-i="sRel"></p>
-<p data-i="sDbi"></p>
+<div class="info" id="info" aria-live="polite">
+<h3 id="infoH"></h3>
+<p id="infoTxt"></p>
+<p class="refs"><span data-i="readMore">Read more:</span> <a id="infoLink" href="#" target="_blank" rel="noopener"></a> · <span data-i="refBook"></span></p>
+</div>
 </section>
 
 <section id="note">
@@ -298,6 +298,7 @@ footer a{color:inherit}
 <ul>
 <li data-i="note1"></li>
 <li data-i="note2"></li>
+<li data-i="note3"></li>
 </ul>
 </section>
 <section id="avvertenza" class="warn" role="note" data-ia="warnH">
@@ -308,8 +309,10 @@ footer a{color:inherit}
 <footer>
 <div><b data-i="footWarn">Educational simulations: data not valid for real-world use.</b></div>
 <div id="appCopy" data-i="footCopy"></div>
+<div data-i="footThanks"></div>
 <div data-i="footShare"></div>
 <div data-i="footVer"></div>
+<div id="notifyRow" hidden><button type="button" id="notifyBtn" class="linkbtn"></button> <span id="notifyMsg"></span></div>
 <div data-i="footThree"></div>
 </footer>
 </div>
@@ -328,16 +331,16 @@ if(window.console!==c){try{window.console=c}catch(e){}}})();
 </script>
 <script>
 /*!
- * LobeLab - Antenna radiation pattern simulator
- * Version 1.10.0 (2026-10-16)
+ * LobeLab - Educational antenna radiation pattern simulator
+ * Version 1.10.98 (2026-10-16)
  * Copyright (c) 2026 BBerry2020 - https://github.com/BBerry2020
  * Licence CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
  * Educational simulations only: data not valid for real-world use.
  */
 const APP=Object.freeze({
   name:"LobeLab",
-  subtitle:{en:"Antenna radiation pattern simulator",it:"Simulazione di modelli di diagramma di radiazione"},
-  version:"1.10.0",
+  subtitle:{en:"Educational antenna radiation pattern simulator",it:"Simulatore didattico di diagrammi di radiazione"},
+  version:"1.10.98",
   date:"2026-10-16",
   author:"BBerry2020",
   authorUrl:"https://github.com/BBerry2020",
@@ -356,13 +359,12 @@ const GH='<a href="https://github.com/BBerry2020" target="_blank" rel="noopener"
 const SRC='https://github.com/BBerry2020/lobelab';
 const I18N={
 en:{
-  title:"LobeLab · Antenna radiation pattern simulator",
+  title:"LobeLab · Educational antenna radiation pattern simulator",
   langGroup:"Language",
   theme:"Light/dark theme",
-  sub:"Antenna radiation pattern simulator",
+  sub:"Educational antenna radiation pattern simulator",
   ver:"Version "+APP.version+" · 16 October 2026",
-  intro:"Thirteen antennas compared: radiation solid, dB scale, cross-section and image antenna below the ground.",
-  viewerH:"Viewer",
+  intro:"Compare the 3D radiation patterns of the most common ham radio antennas, from dipoles and verticals to loops and Yagis: dB or dBi colour scale, cross-section view and image antenna below the ground.",
   viewerP:"Pick an antenna and drag to rotate the solid. Use the buttons at the top right, the mouse wheel or a pinch on touch screens to zoom and to go full screen. “Show cross-section” cuts the solid in half and shows the antenna inside it and, for antennas over ground, the image antenna below the ground.",
   viewerAria:"3D viewer: drag to rotate, + and − to zoom, F for full screen, S to save an image",
   selAria:"Choose the antenna",
@@ -390,40 +392,41 @@ en:{
   scaleRelName:"dB relative to the maximum",scaleDbiName:"dBi, indicative peak gain",
   scaleAriaDbi:"Colour scale in dBi with power multiplier relative to the isotropic antenna",
   u20:"+20 dBi: 100 times the isotropic antenna",u10:"+10 dBi: 10 times the isotropic antenna",u0:"0 dBi: same as the isotropic antenna",um10:"−10 dBi: one tenth of the isotropic antenna",um20:"−20 dBi: one hundredth of the isotropic antenna",
-  sDbi:"With <b>Absolute scale (dBi)</b> turned on, all antennas share one scale, compared with the isotropic antenna: each solid is scaled so that its maximum equals the <b>indicative peak gain</b> given in its description, while the shape comes from the model. Now you can see how much the 9-element Yagi really stands out from the dipole and the isotropic antenna. Here the multipliers are relative to the isotropic antenna: ×10 means ten times the power in that direction. Antennas over ground include the gain from the ground reflection; for the Yagis the free-space value is shown in brackets.",
   imgSaved:"Image saved",
   fsleg:SW_R+" real &nbsp;"+SW_I+" image<span class=\"lgl\"> · cones = current direction · grey disc = ground · beams point right · heights not to scale</span><span class=\"lgs\"> · cones = current · disc = ground</span>",
   fslegT:"Shown in cross-section: real antenna in dark grey, image antenna in purple; the dot is the feed point; the cones show the current direction; the grey disc is the ground; directional antennas point to the right; heights are schematic, not to scale",
   legend:"In cross-section: "+SW_R+" real antenna &nbsp; "+SW_I+" image antenna &nbsp; cones = current direction · grey disc = ground · directional antennas point right (+x) · heights schematic, not to scale",
-  scaleH:"The colour scale",
-  sRed:"<b>Red</b>: maximum radiation, within about 3 dB of the peak (power ×1 to ×0.5).",
-  sOrange:"<b>Orange</b>: around −10 dB, one tenth of the power.",
-  sGreen:"<b>Green</b>: around −20 dB, one hundredth.",
-  sBlue:"<b>Blue</b>: −30 dB and below, the nulls.",
-  sPower:"Next to each dB value is the <b>power multiplier</b> relative to the direction of maximum. Every −10 dB the power is divided by 10; every −3 dB it roughly halves. For example, if the signal in the direction of maximum is equivalent to 100 W, it is equivalent to 50 W at −3 dB, 10 W at −10 dB, 1 W at −20 dB and 0.1 W at −30 dB.",
-  sRel:"Colour and radius show the same quantity. By default the scale is relative to each antenna's own maximum: the red of the 9-element Yagi (about 16 dBi over ground) is worth far more in absolute terms than the red of the dipole (2.15 dBi).",
   notesH:"Model notes",
   note1:"<b>Image antenna</b>: a conducting ground behaves like a mirror. In the image, the horizontal component of the current is reversed while the vertical one stays the same. This is why, for horizontal antennas, the fields cancel at the horizon and the lobe rises.",
+  aboutH:"History and background",readMore:"Read more:",refBook:"for a deeper study, <i>The ARRL Antenna Book</i>",
+  note3:"<b>Absolute scale (dBi)</b>: each solid is scaled so that its maximum equals the indicative peak gain given in its description, while the shape comes from the model. Antennas over ground include the gain from the ground reflection; for the Yagis the free-space value is shown in brackets.",
   note2:"These are <b>simplified theoretical models</b> computed in the browser: perfect ground, antenna clear of obstacles, indicative gains. The bent dipoles (inverted V, upright V and horizontal V) are computed by adding up the contribution of every wire segment.",
   warnH:"Disclaimer",
   warn1:"The simulations on this page are <b>for educational purposes only</b>: they help you understand how the shape of the lobe changes from one antenna to another. The solids come from simplified theoretical models, with ideal ground, lossless antennas and no nearby obstacles, and the gains shown are only indicative.",
   warn2:"The values shown must therefore not be used to design, size, verify or certify a real installation, nor for regulatory compliance or electromagnetic field exposure assessments. Those purposes require instrument measurements and dedicated calculation tools.",
   footWarn:"Educational simulations: data not valid for real-world use.",
-  footCopy:"© 2026 "+GH+" · Licence <a rel=\"license noopener\" href=\"https://creativecommons.org/licenses/by-sa/4.0/deed.en\" target=\"_blank\">CC BY-SA 4.0</a> · <a href=\""+SRC+"\" target=\"_blank\" rel=\"noopener\">Source code on GitHub</a>",
+  footCopy:"© 2026 "+GH+" · <span class=\"fver\">LobeLab v"+APP.version+"</span> (16 October 2026) · Licence <a rel=\"license noopener\" href=\"https://creativecommons.org/licenses/by-sa/4.0/deed.en\" target=\"_blank\">CC BY-SA 4.0</a> · <a href=\""+SRC+"\" target=\"_blank\" rel=\"noopener\">Source code on GitHub</a>",
+  footThanks:"Thanks to <a href=\"https://www.ari.it/\" target=\"_blank\" rel=\"noopener\">A.R.I. – Associazione Radioamatori Italiani</a> and to all the teachers of the Corso Nazionale Aspiranti Radioamatori 2026.",
   footShare:"You may share and adapt this work, giving credit to the author and keeping the same licence.",
-  footVer:"LobeLab · version "+APP.version+" of 16 October 2026 · self-contained page, works offline",
+  footVer:"Self-contained page, works offline.",
+  notifyOff:"🔔 Notify me when a new version is out",
+  notifyOnTxt:"🔔 Update notifications on · turn off",
+  notifyDenied:"Notifications are blocked in your browser settings.",
+  notifyOkTitle:"LobeLab: update notifications on",
+  notifyOkBody:"You will get a notification when a new version is published.",
+  notifyNewTitle:"LobeLab {v} is available",
+  notifyNewBody:"Click to reload the page and get the new version.",
   footThree:"3D engine: three.js r128, © 2010-2021 Three.js Authors, MIT licence",
   no3d:"3D engine not available.",
   noWebgl:"Your browser does not support WebGL: the 3D viewer cannot be shown."
 },
 it:{
-  title:"LobeLab · Simulazione di modelli di diagramma di radiazione",
+  title:"LobeLab · Simulatore didattico di diagrammi di radiazione",
   langGroup:"Lingua",
   theme:"Tema chiaro/scuro",
-  sub:"Simulazione di modelli di diagramma di radiazione",
+  sub:"Simulatore didattico di diagrammi di radiazione",
   ver:"Versione "+APP.version+" · 16 ottobre 2026",
-  intro:"Tredici antenne a confronto: solido di radiazione, scala in dB, sezione e antenna immagine sotto il suolo.",
-  viewerH:"Visualizzatore",
+  intro:"Confronta in 3D i diagrammi di radiazione delle antenne più diffuse tra i radioamatori, dai dipoli e dalle verticali fino ai loop e alle Yagi: scala colori in dB o dBi, vista in sezione e antenna immagine sotto il suolo.",
   viewerP:"Scegli un'antenna e trascina per ruotare il solido; con i pulsanti in alto a destra, la rotella del mouse o il pizzico su touch puoi fare lo zoom e passare a schermo intero. \"Mostra in sezione\" taglia il solido a metà e mostra l'antenna al suo interno e, per le antenne con suolo, l'antenna immagine sotto il terreno.",
   viewerAria:"Visualizzatore 3D: trascina per ruotare, + e − per lo zoom, F per lo schermo intero, S per salvare un'immagine",
   selAria:"Scegli l'antenna",
@@ -451,28 +454,30 @@ it:{
   scaleRelName:"dB relativi al massimo",scaleDbiName:"dBi, guadagno di picco indicativo",
   scaleAriaDbi:"Scala colori in dBi con moltiplicatore di potenza rispetto all'antenna isotropica",
   u20:"+20 dBi: 100 volte l'antenna isotropica",u10:"+10 dBi: 10 volte l'antenna isotropica",u0:"0 dBi: come l'antenna isotropica",um10:"−10 dBi: un decimo dell'antenna isotropica",um20:"−20 dBi: un centesimo dell'antenna isotropica",
-  sDbi:"Con la <b>Scala assoluta (dBi)</b> attiva, tutte le antenne usano la stessa scala, riferita all'antenna isotropica: ogni solido è scalato in modo che il suo massimo sia uguale al <b>guadagno di picco indicativo</b> riportato nella descrizione, mentre la forma è quella del modello. Così si vede quanto la Yagi 9 elementi sporge davvero rispetto al dipolo e all'isotropica. Qui i moltiplicatori sono rispetto all'isotropica: ×10 vuol dire dieci volte la potenza in quella direzione. Per le antenne sopra il suolo il valore include il guadagno dovuto alla riflessione del terreno; per le Yagi tra parentesi c'è il valore in spazio libero.",
   imgSaved:"Immagine salvata",
   fsleg:SW_R+" reale &nbsp;"+SW_I+" immagine<span class=\"lgl\"> · coni = verso della corrente · disco grigio = suolo · direttive verso destra · altezze non in scala</span><span class=\"lgs\"> · coni = corrente · disco = suolo</span>",
   fslegT:"Visibili in sezione: antenna reale in grigio scuro, antenna immagine in viola; il pallino è il punto di alimentazione; i coni indicano il verso della corrente; il disco grigio è il suolo; le antenne direttive puntano verso destra; altezze schematiche, non in scala",
   legend:"In sezione: "+SW_R+" antenna reale &nbsp; "+SW_I+" antenna immagine &nbsp; coni = verso della corrente · disco grigio = suolo · le direttive puntano verso destra (+x) · altezze schematiche, non in scala",
-  scaleH:"La scala colori",
-  sRed:"<b>Rosso</b>: zona di massimo irraggiamento, entro circa 3 dB dal picco (potenza da ×1 a ×0,5).",
-  sOrange:"<b>Arancione</b>: intorno a −10 dB, un decimo della potenza.",
-  sGreen:"<b>Verde</b>: intorno a −20 dB, un centesimo.",
-  sBlue:"<b>Blu</b>: −30 dB e oltre, i nulli.",
-  sPower:"Accanto a ogni valore in dB c'è il <b>moltiplicatore di potenza</b> rispetto alla direzione del massimo. Ogni −10 dB la potenza si divide per 10, ogni −3 dB circa si dimezza. Per esempio, se nella direzione del massimo il segnale equivale a 100 W, a −3 dB equivale a 50 W, a −10 dB a 10 W, a −20 dB a 1 W e a −30 dB a 0,1 W.",
-  sRel:"Colore e raggio rappresentano la stessa grandezza. Di base la scala è relativa al massimo di ciascuna antenna: il rosso della Yagi 9 elementi (circa 16 dBi sopra il suolo) vale molto di più in assoluto del rosso del dipolo (2,15 dBi).",
   notesH:"Note sul modello",
   note1:"<b>Antenna immagine</b>: un suolo conduttore si comporta come uno specchio. Nell'immagine la componente orizzontale della corrente è invertita, quella verticale resta uguale. Per questo nelle antenne orizzontali i campi si cancellano all'orizzonte e il lobo si alza.",
+  aboutH:"Storia e approfondimenti",readMore:"Per approfondire:",refBook:"per uno studio più completo, <i>The ARRL Antenna Book</i>",
+  note3:"<b>Scala assoluta (dBi)</b>: ogni solido è scalato in modo che il suo massimo sia uguale al guadagno di picco indicativo riportato nella descrizione, mentre la forma è quella del modello. Per le antenne sopra il suolo il valore include il guadagno dovuto alla riflessione del terreno; per le Yagi tra parentesi c'è il valore in spazio libero.",
   note2:"Sono <b>modelli teorici semplificati</b> calcolati nel browser: suolo perfetto, antenna libera da ostacoli, guadagni indicativi. I dipoli piegati (V rovesciata, V cornuta e corna) sono calcolati sommando il contributo di ogni tratto di filo.",
   warnH:"Avvertenza",
   warn1:"Le simulazioni di questa pagina hanno <b>finalità esclusivamente didattiche</b>: servono a capire come cambia la forma del lobo da un'antenna all'altra. I solidi derivano da modelli teorici semplificati, con suolo ideale, antenne prive di perdite e nessun ostacolo nelle vicinanze, e i guadagni indicati sono solo orientativi.",
   warn2:"Per questo i valori mostrati non vanno usati per progettare, dimensionare, verificare o certificare un impianto reale, né per valutazioni di conformità normativa o di esposizione ai campi elettromagnetici. Per questi scopi servono misure strumentali e strumenti di calcolo dedicati.",
   footWarn:"Simulazioni a scopo didattico: dati non validi per un uso reale.",
-  footCopy:"© 2026 "+GH+" · Licenza <a rel=\"license noopener\" href=\"https://creativecommons.org/licenses/by-sa/4.0/deed.it\" target=\"_blank\">CC BY-SA 4.0</a> · <a href=\""+SRC+"\" target=\"_blank\" rel=\"noopener\">Codice sorgente su GitHub</a>",
+  footCopy:"© 2026 "+GH+" · <span class=\"fver\">LobeLab v"+APP.version+"</span> (16 ottobre 2026) · Licenza <a rel=\"license noopener\" href=\"https://creativecommons.org/licenses/by-sa/4.0/deed.it\" target=\"_blank\">CC BY-SA 4.0</a> · <a href=\""+SRC+"\" target=\"_blank\" rel=\"noopener\">Codice sorgente su GitHub</a>",
+  footThanks:"Grazie ad <a href=\"https://www.ari.it/\" target=\"_blank\" rel=\"noopener\">A.R.I. – Associazione Radioamatori Italiani</a> e a tutti i docenti del <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfD6aCVUnBJt-htWNP4Uh1fJhEK21lFQ-4un0khoIzya3T_Yg/viewform\" target=\"_blank\" rel=\"noopener\">Corso Nazionale Aspiranti Radioamatori 2026</a>.",
   footShare:"Puoi condividere e modificare quest'opera citando l'autore e mantenendo la stessa licenza.",
-  footVer:"LobeLab · versione "+APP.version+" del 16 ottobre 2026 · pagina autonoma, funziona anche offline",
+  footVer:"Pagina autonoma, funziona anche offline.",
+  notifyOff:"🔔 Avvisami quando esce una nuova versione",
+  notifyOnTxt:"🔔 Avvisi di aggiornamento attivi · disattiva",
+  notifyDenied:"Le notifiche sono bloccate nelle impostazioni del browser.",
+  notifyOkTitle:"LobeLab: avvisi di aggiornamento attivi",
+  notifyOkBody:"Riceverai una notifica quando verrà pubblicata una nuova versione.",
+  notifyNewTitle:"È disponibile LobeLab {v}",
+  notifyNewBody:"Clicca per ricaricare la pagina e avere la nuova versione.",
   footThree:"Motore 3D: three.js r128, © 2010-2021 Three.js Authors, licenza MIT",
   no3d:"Motore 3D non disponibile.",
   noWebgl:"Il browser non supporta WebGL: il visualizzatore 3D non può essere mostrato."
@@ -516,19 +521,19 @@ return Math.sqrt(R[0]**2+R[1]**2+R[2]**2+Im[0]**2+Im[1]**2+Im[2]**2)+.0002}}
 const c60=cos(PI/3),s60=sin(PI/3),c45=Math.SQRT1_2;
 const G={ref:{en:'Reference',it:'Riferimento'},vert:{en:'Omnidirectional verticals',it:'Verticali omnidirezionali'},wire:{en:'Wire dipoles',it:'Dipoli filari'},loop:{en:'Loops',it:'Spire'},dir:{en:'Directional',it:'Direttive'}};
 const M=[
-{n:{en:'Isotropic',it:'Isotropica'},d:{en:'0 dBi · perfect sphere, theoretical only',it:'0 dBi · sfera perfetta, solo teorica'},f:()=>1,m:'dot',gi:0,gr:'ref'},
-{n:{en:'Vertical λ/2 dipole',it:'Dipolo λ/2 verticale'},d:{en:'2.15 dBi · the pure toroid',it:'2,15 dBi · il toroide puro'},f:(e)=>dip(e),m:'v',gi:2.15,gr:'vert'},
-{n:{en:'λ/4 ground plane',it:'Ground plane λ/4'},d:{en:'~2 dBi · toroid trimmed underneath',it:'~2 dBi · toroide alleggerito sotto'},f:(e)=>dip(e)*(e<0?.45:1),m:'v',gi:2,gr:'vert'},
-{n:{en:'5/8 λ vertical',it:'Verticale 5/8 λ'},d:{en:'~3–4 dBi · low doughnut + small high lobe',it:'~3–4 dBi · ciambella bassa + lobetto alto'},f:(e)=>{const k=2*PI*.625,c=cos(e);return abs(c)<1e-3?0:abs(cos(k*sin(e))-cos(k))/c*(e<0?.45:1)},m:'v',gi:3.5,gr:'vert'},
-{n:{en:'2×5/8 collinear (X-50 type)',it:'Collineare 2×5/8 (tipo X-50)'},d:{en:'~4–5 dBi on 2 m · flattened doughnut',it:'~4–5 dBi in 2 m · ciambella schiacciata'},f:(e)=>dip(e)*abs(cos(PI*.8*sin(e))),m:'v',gi:4.5,gr:'vert'},
-{n:{en:'Horizontal λ/2 dipole',it:'Dipolo λ/2 orizzontale'},d:{en:'λ/2 above ground · ~7 dBi · lobes at ~30°',it:'λ/2 dal suolo · ~7 dBi · lobi a ~30°'},f:(e,p)=>wire(cos(e)*cos(p),.5)*gnd(e,PI)+.004,m:'h',g:1,gi:7,gr:'wire'},
-{n:{en:'Inverted V',it:'V rovesciata'},d:{en:'apex at λ/2, arms at 90° · ~6 dBi · filled nulls',it:'apice a λ/2, bracci a 90° · ~6 dBi · nulli riempiti'},f:bent([-c45,0,-c45],[c45,0,-c45],.5),m:'iv',g:1,gi:6,gr:'wire'},
-{n:{en:'Upright V dipole',it:'Dipolo a V cornuta'},d:{en:'centre at λ/2, arms 90° upward · ~7 dBi · filled nulls',it:'centro a λ/2, bracci a 90° in su · ~7 dBi · nulli riempiti'},f:bent([-c45,0,c45],[c45,0,c45],.5),m:'vc',g:1,gi:7,gr:'wire'},
-{n:{en:'Horizontal V dipole ("horns")',it:'Corna (dipolo a V orizzontale)'},d:{en:'arms at 120°, λ/2 above ground · ~6–7 dBi · almost omni',it:'bracci a 120°, λ/2 dal suolo · ~6–7 dBi · quasi omni'},f:bent([c60,s60,0],[c60,-s60,0],.5),m:'corna',g:1,gi:6.5,gr:'wire'},
-{n:{en:'1.5 λ long dipole',it:'Dipolo lungo 1,5 λ'},d:{en:'λ/2 above ground · ~7.5 dBi · multiple lobes',it:'λ/2 dal suolo · ~7,5 dBi · lobi multipli'},f:(e,p)=>wire(cos(e)*cos(p),1.5)*gnd(e,PI)+.004,m:'h',g:1,gi:7.5,gr:'wire'},
-{n:{en:'Vertical magnetic loop',it:'Loop magnetico verticale'},d:{en:'~−3 dBi (−1 to −8) · nulls on the loop axis',it:'~−3 dBi (da −1 a −8) · nulli sull\'asse'},f:(e,p)=>Math.sqrt(Math.max(0,1-(cos(e)*sin(p))**2))*(e<0?.45:1),m:'loop',gi:-3,gr:'loop'},
-{n:{en:'3-element Yagi',it:'Yagi 3 elementi'},d:{en:'λ above ground · ~11 dBi (7 in free space) · F/B ~15 dB',it:'λ dal suolo · ~11 dBi (7 in spazio libero) · F/B ~15 dB'},f:(e,p)=>wire(cos(e)*sin(p),.5)*yf(cos(e)*cos(p),1.5,.18)*gnd(e,2*PI),m:'yagi',g:1,gi:11,gr:'dir'},
-{n:{en:'9-element Yagi',it:'Yagi 9 elementi'},d:{en:'λ above ground · ~16 dBi (13 in free space) · narrow beam',it:'λ dal suolo · ~16 dBi (13 in spazio libero) · fascio stretto'},f:(e,p)=>wire(cos(e)*sin(p),.5)*yf(cos(e)*cos(p),8,.03)*gnd(e,2*PI),m:'yagi',g:1,gi:16,gr:'dir'}
+{n:{en:'Isotropic',it:'Isotropica'},d:{en:'0 dBi · perfect sphere, theoretical only',it:'0 dBi · sfera perfetta, solo teorica'},f:()=>1,m:'dot',gi:0,gr:'ref',h:{"en": "The isotropic antenna radiates equally in every direction. It cannot actually be built for radio waves (a consequence of the so-called hairy ball theorem), but it is the ideal reference against which every real antenna is measured: the “i” in dBi stands for isotropic.", "it": "L'antenna isotropica irradia allo stesso modo in tutte le direzioni. Per le onde radio non si può realizzare davvero (è una conseguenza del cosiddetto teorema della palla pelosa), ma è il riferimento ideale con cui si confronta ogni antenna reale: la «i» di dBi sta proprio per isotropica."},w:{"en": ["Isotropic radiator", "https://en.wikipedia.org/wiki/Isotropic_radiator"], "it": ["Antenna isotropica", "https://it.wikipedia.org/wiki/Antenna_isotropica"]}},
+{n:{en:'Vertical λ/2 dipole',it:'Dipolo λ/2 verticale'},d:{en:'2.15 dBi · the pure toroid',it:'2,15 dBi · il toroide puro'},f:(e)=>dip(e),m:'v',gi:2.15,gr:'vert',h:{"en": "The dipole is the oldest antenna in radio: Heinrich Hertz used one in 1887 to demonstrate the existence of electromagnetic waves. Two conductors fed at the centre, each about a quarter wavelength long, give the classic doughnut pattern. Mounted vertically it is omnidirectional with vertical polarisation, the usual choice on VHF and UHF.", "it": "Il dipolo è l'antenna più antica della radio: Heinrich Hertz ne usò uno nel 1887 per dimostrare l'esistenza delle onde elettromagnetiche. Due conduttori alimentati al centro, lunghi circa un quarto d'onda ciascuno, producono la classica ciambella. In verticale è omnidirezionale e a polarizzazione verticale, la scelta abituale in VHF e UHF."},w:{"en": ["Dipole antenna", "https://en.wikipedia.org/wiki/Dipole_antenna"], "it": ["Antenna a dipolo", "https://it.wikipedia.org/wiki/Antenna_a_dipolo"]}},
+{n:{en:'λ/4 ground plane',it:'Ground plane λ/4'},d:{en:'~2 dBi · toroid trimmed underneath',it:'~2 dBi · toroide alleggerito sotto'},f:(e)=>dip(e)*(e<0?.45:1),m:'v',gi:2,gr:'vert',h:{"en": "The vertical monopole goes back to Guglielmo Marconi, who invented it in 1895 and used it for his long-distance experiments. In the ground plane version a quarter-wave whip is fed against three or four quarter-wave radials that act as an artificial ground, so the antenna can sit on a mast far from the real ground. Simple and cheap, it is a classic for CB and VHF.", "it": "Il monopolo verticale risale a Guglielmo Marconi, che lo inventò nel 1895 e lo usò per i suoi collegamenti a lunga distanza. Nella versione ground plane uno stilo da un quarto d'onda è alimentato contro tre o quattro radiali, anch'essi da un quarto d'onda, che fanno da terra artificiale: così l'antenna si può montare su un palo lontano dal suolo vero. Semplice ed economica, è un classico per CB e VHF."},w:{"en": ["Monopole antenna", "https://en.wikipedia.org/wiki/Monopole_antenna"], "it": ["Antenna a stilo", "https://it.wikipedia.org/wiki/Antenna_a_stilo"]}},
+{n:{en:'5/8 λ vertical',it:'Verticale 5/8 λ'},d:{en:'~3–4 dBi · low doughnut + small high lobe',it:'~3–4 dBi · ciambella bassa + lobetto alto'},f:(e)=>{const k=2*PI*.625,c=cos(e);return abs(c)<1e-3?0:abs(cos(k*sin(e))-cos(k))/c*(e<0?.45:1)},m:'v',gi:3.5,gr:'vert',h:{"en": "Lengthening the vertical radiator to 5/8 of a wavelength concentrates the energy towards the horizon: compared with the quarter-wave monopole it gains about 3 dB at low angles, at the price of a matching coil at the base. This is why it became so popular for mobile, CB and VHF base stations.", "it": "Allungando lo stilo a 5/8 d'onda l'energia si concentra verso l'orizzonte: rispetto al monopolo da un quarto d'onda si guadagnano circa 3 dB agli angoli bassi, al prezzo di una bobina di adattamento alla base. Per questo è diventata così diffusa per il mobile, la CB e le stazioni base VHF."},w:{"en": ["Monopole antenna", "https://en.wikipedia.org/wiki/Monopole_antenna"], "it": ["Antenna a stilo", "https://it.wikipedia.org/wiki/Antenna_a_stilo"]}},
+{n:{en:'2×5/8 collinear (X-50 type)',it:'Collineare 2×5/8 (tipo X-50)'},d:{en:'~4–5 dBi on 2 m · flattened doughnut',it:'~4–5 dBi in 2 m · ciambella schiacciata'},f:(e)=>dip(e)*abs(cos(PI*.8*sin(e))),m:'v',gi:4.5,gr:'vert',h:{"en": "A collinear stacks several radiating sections on the same vertical line, fed in phase. Each doubling of the sections adds up to about 3 dB, squeezing the doughnut flat towards the horizon. Collinears in a fibreglass radome are the typical base-station antenna on VHF and UHF, from amateur radio to emergency services.", "it": "La collineare sovrappone più sezioni radianti sulla stessa verticale, alimentate in fase. Ogni raddoppio delle sezioni aggiunge fino a circa 3 dB, schiacciando la ciambella verso l'orizzonte. Le collineari in vetroresina sono la tipica antenna da stazione base in VHF e UHF, dai radioamatori ai servizi di emergenza."},w:{"en": ["Collinear antenna array", "https://en.wikipedia.org/wiki/Collinear_antenna_array"], "it": ["Collinear antenna array (in inglese)", "https://en.wikipedia.org/wiki/Collinear_antenna_array"]}},
+{n:{en:'Horizontal λ/2 dipole',it:'Dipolo λ/2 orizzontale'},d:{en:'λ/2 above ground · ~7 dBi · lobes at ~30°',it:'λ/2 dal suolo · ~7 dBi · lobi a ~30°'},f:(e,p)=>wire(cos(e)*cos(p),.5)*gnd(e,PI)+.004,m:'h',g:1,gi:7,gr:'wire',h:{"en": "Strung horizontally between two supports, the half-wave dipole is the most common HF wire antenna and often the first one a radio amateur builds. Its pattern is a figure of eight, strongest broadside to the wire, and over ground the reflection lifts the lobes: the higher the dipole, the lower the angle of radiation.", "it": "Teso in orizzontale tra due sostegni, il dipolo a mezz'onda è l'antenna filare più diffusa in HF e spesso la prima che un radioamatore costruisce. Irradia a «otto», al massimo perpendicolarmente al filo, e sopra il suolo la riflessione alza i lobi: più il dipolo è alto, più l'angolo di radiazione è basso."},w:{"en": ["Dipole antenna", "https://en.wikipedia.org/wiki/Dipole_antenna"], "it": ["Antenna a dipolo", "https://it.wikipedia.org/wiki/Antenna_a_dipolo"]}},
+{n:{en:'Inverted V',it:'V rovesciata'},d:{en:'apex at λ/2, arms at 90° · ~6 dBi · filled nulls',it:'apice a λ/2, bracci a 90° · ~6 dBi · nulli riempiti'},f:bent([-c45,0,-c45],[c45,0,-c45],.5),m:'iv',g:1,gi:6,gr:'wire',h:{"en": "The inverted V is a half-wave dipole bent in the middle and hung from a single central support, with the arms sloping down. It needs only one mast, takes up less space and fills in the nulls off the ends of the wire, which makes it one of the most popular HF antennas among radio amateurs.", "it": "La V rovesciata è un dipolo a mezz'onda piegato al centro e appeso a un unico sostegno, con i bracci inclinati verso il basso. Basta un solo palo, occupa meno spazio e riempie i nulli in direzione dei bracci: per questo è una delle antenne HF più amate dai radioamatori."},w:{"en": ["Dipole antenna", "https://en.wikipedia.org/wiki/Dipole_antenna"], "it": ["Antenna a dipolo", "https://it.wikipedia.org/wiki/Antenna_a_dipolo"]}},
+{n:{en:'Upright V dipole',it:'Dipolo a V cornuta'},d:{en:'centre at λ/2, arms 90° upward · ~7 dBi · filled nulls',it:'centro a λ/2, bracci a 90° in su · ~7 dBi · nulli riempiti'},f:bent([-c45,0,c45],[c45,0,c45],.5),m:'vc',g:1,gi:7,gr:'wire',h:{"en": "Here the arms of the dipole rise from the feed point like a pair of horns. It is a less common configuration, useful when the centre can only be fed low down while the ends can be tied higher up. Compared with the inverted V the average height of the wire increases, so the lobes are slightly lower and the gain is closer to that of a straight dipole.", "it": "Qui i bracci del dipolo salgono dal punto di alimentazione come due corna. È una configurazione meno comune, utile quando il centro si può alimentare solo in basso mentre le estremità si possono fissare più in alto. Rispetto alla V rovesciata l'altezza media del filo aumenta, quindi i lobi sono un po' più bassi e il guadagno si avvicina a quello del dipolo dritto."},w:{"en": ["Dipole antenna", "https://en.wikipedia.org/wiki/Dipole_antenna"], "it": ["Antenna a dipolo", "https://it.wikipedia.org/wiki/Antenna_a_dipolo"]}},
+{n:{en:'Horizontal V dipole ("horns")',it:'Corna (dipolo a V orizzontale)'},d:{en:'arms at 120°, λ/2 above ground · ~6–7 dBi · almost omni',it:'bracci a 120°, λ/2 dal suolo · ~6–7 dBi · quasi omni'},f:bent([c60,s60,0],[c60,-s60,0],.5),m:'corna',g:1,gi:6.5,gr:'wire',h:{"en": "Bending the two arms of a horizontal dipole towards each other, at 120° in this model, gives the V dipole, a common shape for compact rotary dipoles on the HF bands. The bend fills in the nulls off the ends and makes the pattern almost omnidirectional, at the cost of a fraction of a decibel in the best direction.", "it": "Piegando nel piano orizzontale i due bracci del dipolo, qui a 120°, si ottiene il dipolo a V, una forma diffusa nei dipoli rotativi compatti per le bande HF. La piega riempie i nulli in direzione dei bracci e rende il diagramma quasi omnidirezionale, al costo di qualche decimo di dB nella direzione migliore."},w:{"en": ["Dipole antenna", "https://en.wikipedia.org/wiki/Dipole_antenna"], "it": ["Antenna a dipolo", "https://it.wikipedia.org/wiki/Antenna_a_dipolo"]}},
+{n:{en:'1.5 λ long dipole',it:'Dipolo lungo 1,5 λ'},d:{en:'λ/2 above ground · ~7.5 dBi · multiple lobes',it:'λ/2 dal suolo · ~7,5 dBi · lobi multipli'},f:(e,p)=>wire(cos(e)*cos(p),1.5)*gnd(e,PI)+.004,m:'h',g:1,gi:7.5,gr:'wire',h:{"en": "A dipole cut for one band also works on its odd harmonics: a half-wave dipole for 7 MHz, for instance, is 1.5 wavelengths long on 21 MHz. Once the wire is longer than half a wavelength, the pattern splits into several lobes that move towards the direction of the wire.", "it": "Un dipolo tagliato per una banda funziona anche sulle armoniche dispari: per esempio un dipolo a mezz'onda per i 7 MHz è lungo 1,5 lunghezze d'onda sui 21 MHz. Quando il filo supera la mezz'onda, il diagramma si divide in più lobi che si avvicinano alla direzione del filo."},w:{"en": ["Dipole antenna", "https://en.wikipedia.org/wiki/Dipole_antenna"], "it": ["Antenna a dipolo", "https://it.wikipedia.org/wiki/Antenna_a_dipolo"]}},
+{n:{en:'Vertical magnetic loop',it:'Loop magnetico verticale'},d:{en:'~−3 dBi (−1 to −8) · nulls on the loop axis',it:'~−3 dBi (da −1 a −8) · nulli sull\'asse'},f:(e,p)=>Math.sqrt(Math.max(0,1-(cos(e)*sin(p))**2))*(e<0?.45:1),m:'loop',gi:-3,gr:'loop',h:{"en": "The magnetic loop, or small transmitting loop, is a single turn of thick conductor much smaller than the wavelength, brought to resonance by a capacitor. It fits on a balcony, but its bandwidth is very narrow, it must be retuned whenever the frequency changes and its efficiency depends heavily on losses; the capacitor can see thousands of volts. Small loops have long been used for direction finding, thanks to the sharp null along their axis.", "it": "Il loop magnetico, o piccola spira trasmittente, è una sola spira di conduttore spesso molto più piccola della lunghezza d'onda, portata in risonanza da un condensatore. Sta su un balcone, ma ha una banda passante strettissima, va risintonizzato a ogni cambio di frequenza e il suo rendimento dipende molto dalle perdite; ai capi del condensatore ci possono essere migliaia di volt. Le piccole spire sono usate da tempo per la radiogoniometria, grazie al nullo netto lungo il loro asse."},w:{"en": ["Loop antenna", "https://en.wikipedia.org/wiki/Loop_antenna"], "it": ["Loop antenna (in inglese)", "https://en.wikipedia.org/wiki/Loop_antenna"]}},
+{n:{en:'3-element Yagi',it:'Yagi 3 elementi'},d:{en:'λ above ground · ~11 dBi (7 in free space) · F/B ~15 dB',it:'λ dal suolo · ~11 dBi (7 in spazio libero) · F/B ~15 dB'},f:(e,p)=>wire(cos(e)*sin(p),.5)*yf(cos(e)*cos(p),1.5,.18)*gnd(e,2*PI),m:'yagi',g:1,gi:11,gr:'dir',h:{"en": "The Yagi–Uda antenna was invented in 1926 at Tohoku Imperial University in Japan, mainly by Shintaro Uda together with his supervisor Hidetsugu Yagi, who presented it in English in 1928. A driven dipole is flanked by a reflector behind and one or more directors in front, all of them parasitic elements. With three elements it is the classic rotary beam for HF and VHF.", "it": "L'antenna Yagi-Uda fu inventata nel 1926 all'Università Imperiale di Tohoku, in Giappone, soprattutto da Shintaro Uda insieme al suo superiore Hidetsugu Yagi, che la presentò in inglese nel 1928. Un dipolo alimentato è affiancato da un riflettore dietro e da uno o più direttori davanti, tutti elementi parassiti. Con tre elementi è la classica antenna direttiva rotativa per HF e VHF."},w:{"en": ["Yagi–Uda antenna", "https://en.wikipedia.org/wiki/Yagi%E2%80%93Uda_antenna"], "it": ["Antenna Yagi", "https://it.wikipedia.org/wiki/Antenna_Yagi"]}},
+{n:{en:'9-element Yagi',it:'Yagi 9 elementi'},d:{en:'λ above ground · ~16 dBi (13 in free space) · narrow beam',it:'λ dal suolo · ~16 dBi (13 in spazio libero) · fascio stretto'},f:(e,p)=>wire(cos(e)*sin(p),.5)*yf(cos(e)*cos(p),8,.03)*gnd(e,2*PI),m:'yagi',g:1,gi:16,gr:'dir',h:{"en": "Adding directors narrows the beam and increases the gain. Long Yagis were used in airborne radar during the Second World War and afterwards became the familiar rooftop antenna for VHF and UHF television. Radio amateurs use them on VHF and UHF for long-distance and satellite contacts.", "it": "Aggiungendo direttori il fascio si stringe e il guadagno cresce. Le Yagi lunghe furono usate nei radar aerei durante la Seconda guerra mondiale e in seguito sono diventate la familiare antenna TV sui tetti, in VHF e UHF. I radioamatori le usano in VHF e UHF per i collegamenti a grande distanza e via satellite."},w:{"en": ["Yagi–Uda antenna", "https://en.wikipedia.org/wiki/Yagi%E2%80%93Uda_antenna"], "it": ["Antenna Yagi", "https://it.wikipedia.org/wiki/Antenna_Yagi"]}}
 ];
 const NE=90,NP=180;
 function tab(m){if(m.T)return m;const T=new Float32Array((NE+1)*NP);let mx=0;
@@ -585,6 +590,8 @@ function labels(i,cut){const m=M[i],nm=(i+1)+'. '+L(m.n);
 document.getElementById('nm').textContent=nm;document.getElementById('ds').textContent=L(m.d);
 const imgOk=m.g&&cut,il=document.getElementById('iml');il.style.opacity=imgOk?1:.4;il.title=!m.g?T('imgNAlabel'):(cut?'':T('imgCutOnly'));
 const fd=document.getElementById('fsdesc');fd.textContent='';const b=document.createElement('b');b.className='fsn';b.textContent=nm+' · ';fd.appendChild(b);fd.appendChild(document.createTextNode(L(m.d)));
+document.getElementById('infoH').textContent=nm+' · '+T('aboutH');document.getElementById('infoTxt').textContent=L(m.h);
+const ww=L(m.w),il2=document.getElementById('infoLink');il2.textContent='Wikipedia – '+ww[0];il2.href=ww[1];
 const ti=document.getElementById('timg');ti.disabled=!imgOk;ti.title=!m.g?T('imgNA'):(cut?T('imgLabel'):T('imgNeedCut'));}
 function build(i,cut,img){const abs=dbiCb.checked;
 if(cur){grp.remove(cur);cur.traverse(o=>{if(o.geometry)o.geometry.dispose()})}
@@ -690,6 +697,27 @@ const name='lobelab-'+(sel+1)+'-'+slug+(cut.checked?'-section':'')+(mode==='abs'
 const dl=u=>{const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();if(u.startsWith('blob:'))URL.revokeObjectURL(u)},1500)};
 try{if(cv.toBlob)cv.toBlob(bl=>{if(bl)dl(URL.createObjectURL(bl));else dl(cv.toDataURL('image/png'))},'image/png');else dl(cv.toDataURL('image/png'))}catch(e){}
 window.__lobelabLastExport={name:name,w:cv.width,h:cv.height}}
+(function updates(){
+const VURL='https://bberry2020.github.io/lobelab/version.json',SITE='https://bberry2020.github.io/lobelab/';
+const row=document.getElementById('notifyRow'),btn=document.getElementById('notifyBtn'),msg=document.getElementById('notifyMsg');
+const ok=('Notification' in window)&&window.isSecureContext&&/^https?:$/.test(location.protocol)&&typeof fetch==='function';
+if(!ok)return;
+const get=k=>{try{return localStorage.getItem(k)}catch(e){return null}},set=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
+const newer=(a,b)=>{const x=String(a).split('.').map(n=>parseInt(n,10)||0),y=String(b).split('.').map(n=>parseInt(n,10)||0);for(let i=0;i<3;i++){if((x[i]||0)!==(y[i]||0))return (x[i]||0)>(y[i]||0)}return false};
+const on=()=>get('lobelab.notify')==='1'&&Notification.permission==='granted';
+function ui(){row.hidden=false;btn.textContent=T(on()?'notifyOnTxt':'notifyOff');msg.textContent=Notification.permission==='denied'?T('notifyDenied'):''}
+function show(title,body,click){try{const n=new Notification(title,{body:body,tag:'lobelab-update'});if(click)n.onclick=()=>{try{window.focus()}catch(e){}click();n.close()}}catch(e){}}
+async function check(){if(!on())return;try{const r=await fetch(VURL+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const j=await r.json();
+if(j&&j.version&&newer(j.version,APP.version)&&get('lobelab.notified')!==j.version){set('lobelab.notified',j.version);
+show(T('notifyNewTitle').replace('{v}',j.version),T('notifyNewBody'),()=>{if(location.protocol.indexOf('http')===0)location.reload();else window.open(SITE,'_blank')})}}catch(e){}}
+btn.onclick=async()=>{if(on()){set('lobelab.notify',null);ui();return}
+let p=Notification.permission;if(p==='default'){try{p=await Notification.requestPermission()}catch(e){p='denied'}}
+if(p==='granted'){set('lobelab.notify','1');show(T('notifyOkTitle'),T('notifyOkBody'));check()}ui()};
+LANG_HOOKS.push(ui);ui();check();
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check()});
+setInterval(check,6*3600*1000);
+window.__lobelabUpdates={check:check,newer:newer};
+})();
 const saveBtn=document.getElementById('save');saveBtn.addEventListener('pointerdown',e=>e.stopPropagation());saveBtn.onclick=savePNG;
 const rs=()=>{rd.setSize(W(),H());cam.aspect=W()/H();cam.updateProjectionMatrix();if(typeof applyCam==='function')applyCam()};
 if(window.ResizeObserver)new ResizeObserver(rs).observe(box);else window.addEventListener('resize',rs);
